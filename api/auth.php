@@ -31,6 +31,15 @@ ini_set('session.use_strict_mode', '1');
 ini_set('session.use_only_cookies', '1');
 ini_set('session.use_trans_sid', '0');
 
+// Fallback session path inside project if default path is not writable.
+$localSessionPath = __DIR__ . '/../storage/sessions';
+if (!is_dir($localSessionPath)) {
+    @mkdir($localSessionPath, 0775, true);
+}
+if (is_dir($localSessionPath) && is_writable($localSessionPath)) {
+    session_save_path($localSessionPath);
+}
+
 if (session_status() === PHP_SESSION_NONE) {
     session_name('GESTIUBOSESSID');
     session_set_cookie_params([
