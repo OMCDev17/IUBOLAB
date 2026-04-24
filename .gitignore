@@ -1,0 +1,29 @@
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs / temp
+*.log
+*.tmp
+*.temp
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# PHP / Composer cache artifacts
+.phpunit.result.cache
+/.composer/
+
+# Misc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
