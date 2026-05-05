@@ -13,7 +13,7 @@ if (!$isPasswordResetToken) {
     $config = require __DIR__ . '/api/config.php';
     $mysqli = new mysqli($config['host'], $config['user'], $config['pass'], $config['db']);
     if ($mysqli->connect_errno) {
-        $tokenError = 'Error de conexión. Vuelve a intentarlo.';
+        $tokenError = 'Error de conexiÃ³n. Vuelve a intentarlo.';
     } else {
         $mysqli->set_charset($config['charset']);
         $stmt = $mysqli->prepare('SELECT pr.id, u.email FROM password_resets pr JOIN employees u ON pr.user_id = u.id WHERE pr.token = ? AND pr.expires_at > NOW() LIMIT 1');
@@ -24,7 +24,7 @@ if (!$isPasswordResetToken) {
         $stmt->close();
 
         if (!$row) {
-            $tokenError = 'Token inválido o expirado';
+            $tokenError = 'Token invÃ¡lido o expirado';
         }
     }
 }
@@ -33,12 +33,12 @@ if (!$isPasswordResetToken) {
 <html class="light" lang="es"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Cambiar contraseña - Instituto de Bio-Orgánica Antonio González</title>
+<title>Cambiar contraseña - Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link rel="icon" href="/GESTIUBO/imagenes/icono_circulo.png" type="image/png"/>
-<link rel="icon" type="image/png" sizes="32x32" href="/GESTIUBO/imagenes/icono_circulo.png"/>
-<link rel="icon" type="image/png" sizes="16x16" href="/GESTIUBO/imagenes/icono_circulo.png"/>
-<link rel="apple-touch-icon" href="/GESTIUBO/imagenes/icono_circulo.png"/>
+<link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/iubolab/imagenes/icono_circulo.png"/>
+<link rel="apple-touch-icon" href="/iubolab/imagenes/icono_circulo.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Argentum+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -72,7 +72,7 @@ if (!$isPasswordResetToken) {
                 <h1 class="text-2xl font-bold">Cambiar contraseña</h1>
                 <p class="text-sm text-slate-500 dark:text-slate-400">Actualiza tu contraseña de manera segura.</p>
                 <?php if ($fullName): ?>
-                    <p class="text-xs text-slate-400 mt-1">Sesión: <?php echo $fullName; ?></p>
+                    <p class="text-xs text-slate-400 mt-1">SesiÃ³n: <?php echo $fullName; ?></p>
                 <?php endif; ?>
             </div>
         </div>
@@ -185,6 +185,7 @@ if (!$isPasswordResetToken) {
     }
 </script>
 </body></html>
+
 
 
 

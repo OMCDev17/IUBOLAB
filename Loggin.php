@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require __DIR__ . '/api/auth.php';
 
 // If already logged in, redirect to the correct dashboard.
@@ -27,10 +27,10 @@ if ($user) {
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>GestIUBO - Acceso</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="icon" href="/GESTIUBO/imagenes/icono_circulo.png" type="image/png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/GESTIUBO/imagenes/icono_circulo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/GESTIUBO/imagenes/icono_circulo.png">
-    <link rel="apple-touch-icon" href="/GESTIUBO/imagenes/icono_circulo.png">
+    <link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/iubolab/imagenes/icono_circulo.png">
+    <link rel="apple-touch-icon" href="/iubolab/imagenes/icono_circulo.png">
     <link href="https://fonts.googleapis.com/css2?family=Argentum+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <script>
@@ -79,17 +79,17 @@ if ($user) {
                         es: {
                             title: 'Recursos Humanos',
                             desc: 'Ingresa tus credenciales para acceder.',
-                            userLabel: 'Usuario o Correo Electrónico',
+                            userLabel: 'Usuario o Correo ElectrÃƒÂ³nico',
                             userPlaceholder: 'ej. usuario_123',
-                            passLabel: 'Contraseña',
-                            forgot: '¿Olvidaste tu contraseña?',
-                            remember: 'Recordar mi sesión',
-                            signIn: 'Iniciar Sesión',
-                            noAccount: '¿No tienes una cuenta?',
+                            passLabel: 'ContraseÃ±a',
+                            forgot: 'Â¿Olvidaste tu contraseÃ±a?',
+                            remember: 'Recordar mi sesiÃ³n',
+                            signIn: 'Iniciar sesiÃ³n',
+                            noAccount: 'Â¿No tienes una cuenta?',
                             createAccount: 'Crear Cuenta de Miembro',
-                            alertForgot: 'Se ha enviado un correo electrónico de recuperación a su dirección registrada.',
+                            alertForgot: 'Se ha enviado un correo electrÃƒÂ³nico de recuperaciÃƒÂ³n a su direcciÃƒÂ³n registrada.',
                             alertCreate: 'Solicitud de registro enviada al administrador.',
-                            signingIn: 'Iniciando sesión...'
+                            signingIn: 'Iniciando sesiÃ³n...'
                         },
                         en: {
                             title: 'Human Resources',
@@ -170,7 +170,7 @@ if ($user) {
             </div>
             <form id="loginForm" class="space-y-6 max-w-md mx-auto w-full" onsubmit="handleLogin(event)">
                 <div class="space-y-2">
-                    <label class="text-sm font-semibold text-slate-700 block" for="username">Usuario o Correo Electrónico</label>
+                    <label class="text-sm font-semibold text-slate-700 block" for="username">Usuario o Correo ElectrÃƒÂ³nico</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
                         <input class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-lab-accent focus:border-transparent outline-none transition-all placeholder:text-slate-400" id="username" name="username" placeholder="ej. User_123" type="text" />
@@ -178,8 +178,8 @@ if ($user) {
                 </div>
                 <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <label class="text-sm font-semibold text-slate-700" for="password">Contraseña</label>
-                        <a id="forgotLink" class="text-xs font-bold text-lab-accent hover:text-lab-accentHover transition-colors" href="recuperacion.html">¿Olvidaste tu contraseña?</a>
+                        <label class="text-sm font-semibold text-slate-700" for="password">ContraseÃ±a</label>
+                        <a id="forgotLink" class="text-xs font-bold text-lab-accent hover:text-lab-accentHover transition-colors" href="recuperacion.html">Â¿Olvidaste tu contraseÃ±a?</a>
                     </div>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
@@ -188,17 +188,17 @@ if ($user) {
                 </div>
                 <div class="flex items-center">
                     <input class="w-4 h-4 text-lab-accent border-slate-300 rounded focus:ring-lab-accent" id="remember" type="checkbox" />
-                    <label class="ml-2 text-sm text-slate-600 cursor-pointer" for="remember">Recordar mi sesión</label>
+                    <label class="ml-2 text-sm text-slate-600 cursor-pointer" for="remember">Recordar mi sesiÃ³n</label>
                 </div>
                 <button id="loginButton" class="w-full py-4 bg-lab-accent text-white font-bold rounded-2xl hover:bg-lab-accentHover shadow-lg shadow-purple-100 transition-all flex items-center justify-center gap-2 group" type="submit">
-                    <span id="loginButtonText">Iniciar Sesión</span>
+                    <span id="loginButtonText">Iniciar sesiÃ³n</span>
                     <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">login</span>
                 </button>
                 <p id="loginError" class="text-sm text-red-600 hidden mt-2"></p>
             </form>
             <div class="mt-12 pt-8 border-t border-slate-100 text-center">
                 <p class="text-slate-500 text-sm">
-                    ¿No tienes una cuenta?
+                    Â¿No tienes una cuenta?
                     <a class="text-lab-accent font-bold hover:underline" href="registro">Crear Cuenta de Miembro</a>
                 </p>
             </div>
@@ -215,7 +215,7 @@ if ($user) {
             loginButton.disabled = isLoading;
             loginButton.classList.toggle('opacity-80', isLoading);
             loginButton.classList.toggle('cursor-not-allowed', isLoading);
-            loginButtonText.textContent = isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión';
+            loginButtonText.textContent = isLoading ? 'Iniciando sesiÃ³n...' : 'Iniciar sesiÃ³n';
         }
 
         async function handleLogin(event) {
@@ -226,7 +226,7 @@ if ($user) {
             const password = document.getElementById('password').value;
 
             if (!username || !password) {
-                loginError.textContent = 'Por favor, introduce usuario y contrase�a.';
+                loginError.textContent = 'Por favor, introduce usuario y contraseÃ±a.';
                 loginError.classList.remove('hidden');
                 return;
             }
@@ -248,7 +248,7 @@ if ($user) {
                 const result = await resp.json();
 
                 if (!resp.ok) {
-                    loginError.textContent = result.error || 'Usuario o contrase�a incorrectos.';
+                    loginError.textContent = result.error || 'Usuario o contraseÃ±a incorrectos.';
                     loginError.classList.remove('hidden');
                     return;
                 }
@@ -270,8 +270,9 @@ if ($user) {
     </script>
     <!-- Footer -->
     <footer class="text-center py-6 text-slate-500 text-sm">
-        © 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
+        Ã‚Â© 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
     </footer>
 </body>
 
 </html>
+

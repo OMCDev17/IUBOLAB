@@ -13,10 +13,10 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GestIUBO - Seguridad</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="icon" href="/GESTIUBO/imagenes/icono_circulo.png" type="image/png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/GESTIUBO/imagenes/icono_circulo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/GESTIUBO/imagenes/icono_circulo.png">
-    <link rel="apple-touch-icon" href="/GESTIUBO/imagenes/icono_circulo.png">
+    <link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/iubolab/imagenes/icono_circulo.png">
+    <link rel="apple-touch-icon" href="/iubolab/imagenes/icono_circulo.png">
     <link href="https://fonts.googleapis.com/css2?family=Argentum+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -56,24 +56,24 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             <!-- Navigation / Header -->
             <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
                 <div class="flex items-center gap-3 flex-wrap">
-                    <img alt="Logo de la InstituciÃƒÆ’Ã‚Â³n" class="h-10 w-auto object-contain" src="imagenes/instituto-biorganica-agonzalez-original.png" />
+                    <img alt="Logo de la InstituciÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³n" class="h-10 w-auto object-contain" src="imagenes/instituto-biorganica-agonzalez-original.png" />
                     <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] border-l border-slate-300 dark:border-slate-700 pl-4">Seguridad</h2>
                     <?php if ($fullName): ?>
                         <span class="text-sm text-slate-500 dark:text-slate-400 pl-4">Hola, <?php echo $fullName; ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <button id="mobileMenuToggleSecurity" type="button" class="md:hidden flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary hover:bg-primary hover:text-white transition-colors" aria-label="Abrir menÃƒÂº">
+                    <button id="mobileMenuToggleSecurity" type="button" class="md:hidden flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary hover:bg-primary hover:text-white transition-colors" aria-label="Abrir menÃƒÆ’Ã‚Âº">
                         <span class="material-symbols-outlined text-base">menu</span>
                     </button>
                     <div class="hidden md:flex items-center gap-3">
-                        <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesiÃƒÂ³n" title="Cerrar sesiÃƒÂ³n" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
+                        <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesiÃƒÆ’Ã‚Â³n" title="Cerrar sesiÃƒÆ’Ã‚Â³n" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-base">power_settings_new</span>
                         </a>
                     </div>
                 </div>
                 <div id="mobileMenuSecurity" class="hidden md:hidden w-full border-t border-slate-200 dark:border-slate-800 pt-3">
-                    <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesiÃƒÂ³n</a>
+                    <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesiÃƒÆ’Ã‚Â³n</a>
                 </div>
             </header>
 
@@ -89,7 +89,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                             <input id="searchInput" type="text" placeholder="Buscar por nombre o apellidos" class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-primary focus:border-primary">
                             <button id="searchButton" class="rounded-lg bg-primary text-white font-semibold px-4 py-2 text-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50">Buscar</button>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Por privacidad no se muestran datos hasta realizar una bÃƒÆ’Ã‚Âºsqueda (mÃƒÆ’Ã‚Â­nimo 3 caracteres).</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Por privacidad no se muestran datos hasta realizar una bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºsqueda (mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nimo 3 caracteres).</p>
                     </div>
 
                     <div id="resultsContainer" class="flex flex-col gap-4"></div>
@@ -97,7 +97,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             </main>
 
             <footer class="text-center py-6 text-slate-500 text-sm">
-                Ãƒâ€šÃ‚Â© 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
+                ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
             </footer>
         </div>
     </div>
@@ -114,7 +114,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                 0x017E: 0x9E, 0x0178: 0x9F
             };
             const utf8 = new TextDecoder('utf-8', { fatal: false });
-            const suspicious = /[ÃÂ][\x80-\u017F]?|â€|â€™|â€œ|â€|Ãƒ|Ã‚/;
+            const suspicious = /[ÃƒÃ‚][\x80-\u017F]?|Ã¢â‚¬|Ã¢â‚¬â„¢|Ã¢â‚¬Å“|Ã¢â‚¬Â|ÃƒÆ’|Ãƒâ€š/;
 
             const toBytes = (str) => Uint8Array.from([...str].map((ch) => {
                 const code = ch.codePointAt(0);
@@ -160,7 +160,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             });
             observer.observe(document.body, { childList: true, subtree: true, characterData: true });
         });
-        // Toast reutilizable con estÃƒÆ’Ã‚Â©tica del panel (morado)
+        // Toast reutilizable con estÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©tica del panel (morado)
         const toastHost = (() => {
             const existing = document.getElementById('toastHost');
             if (existing) return existing;
@@ -188,7 +188,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
 
         const maskDni = (value) => {
             const str = String(value ?? '').trim();
-            if (!str) return 'ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â';
+            if (!str) return 'ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â';
             if (str.length <= 4) return `**${str.slice(0, 1)}***`;
             const middle = str.slice(2, -2) || '***';
             return `**${middle}**`;
@@ -257,7 +257,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
         }
 
         async function fetchEmployees() {
-            const res = await fetch('/GESTIUBO/api/employees.php?view=security', {
+            const res = await fetch('/iubolab/api/employees.php?view=security', {
                 credentials: 'same-origin'
             });
             if (!res.ok) throw new Error('No se pudieron cargar los usuarios');
@@ -313,7 +313,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                         <p class="text-sm text-slate-500 dark:text-slate-400">Grupo: ${emp.grupo || '-'}</p>
                         ${emp.is_group_coordinator ? 
                             `<p class="text-sm text-primary font-semibold">Responsable: ${emp.user_phone}</p>` :
-                            `<p class="text-sm text-slate-500 dark:text-slate-400">TelÃƒÆ’Ã‚Â©fono: ${emp.user_phone || '-'}</p>
+                            `<p class="text-sm text-slate-500 dark:text-slate-400">TelÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©fono: ${emp.user_phone || '-'}</p>
                              <p class="text-sm text-slate-500 dark:text-slate-400">Tel. Responsable: ${emp.coordinador_telefono ? `${emp.coordinador_telefono}${emp.coordinador_grupo && emp.coordinador_grupo !== '-' ? ` (${emp.coordinador_grupo})` : ''}` : '-'}</p>`
                         }
                         <p class="text-sm text-slate-500 dark:text-slate-400">DNI/Pasaporte: ${maskDni(emp.dni_pasaporte)}</p>
@@ -396,12 +396,13 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
         });
 
         function logout() {
-            window.location.href = '/GESTIUBO/logout';
+            window.location.href = '/iubolab/logout';
         }
     </script>
 </body>
 
 </html>
+
 
 
 

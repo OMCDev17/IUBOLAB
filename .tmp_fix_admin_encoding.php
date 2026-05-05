@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $p='admin.php';
 $s=file_get_contents($p);
 $prev=$s;

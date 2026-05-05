@@ -72,7 +72,7 @@ try {
         $res->free();
     }
 } catch (Throwable $e) {
-    // Mantener $groupOptions vacío; el frontend intentará cargar vía fetch
+    // Mantener $groupOptions vacÃ­o; el frontend intentarÃ¡ cargar vÃ­a fetch
 }
 ?>
 <!DOCTYPE html>
@@ -83,10 +83,10 @@ try {
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link rel="icon" href="/GESTIUBO/imagenes/icono_circulo.png" type="image/png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/GESTIUBO/imagenes/icono_circulo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/GESTIUBO/imagenes/icono_circulo.png">
-    <link rel="apple-touch-icon" href="/GESTIUBO/imagenes/icono_circulo.png">
+    <link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/iubolab/imagenes/icono_circulo.png">
+    <link rel="apple-touch-icon" href="/iubolab/imagenes/icono_circulo.png">
     <link href="https://fonts.googleapis.com/css2?family=Argentum+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -144,7 +144,7 @@ try {
                         <img alt="Laboratory Background" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZINg3o_zUPuS5vXuAfwcYBTPAY7UjRzIkRxchiRppJOXJBYT77Q4ZjA6ibEOrIGyCZJm_6886aBItSr_RkLtAaQ6FaAoNDGT08M-qYujjz5SOp4Z0euT6ZLlandn9BC1XDLC9RZzDwHHE9LQJaCDDxUepy-vii0jOsCshBOOTfYTUvyoLltdOSHSVKEcGqiuUPaw5svrDnuc-KTMst5JN7kDCGOx4YoU3CtE1b74EN_nQCMwnPu-1mKtJjd674GTO8ufwI2YAk6o" />
                         <div class="relative z-20 h-full flex flex-col justify-end p-8">
                             <h1 class="text-white text-3xl font-bold"><?= $isNewStay ? 'Nueva Estancia / New Internship' : 'Alta de Miembro / Member Registration' ?></h1>
-                            <p class="text-white/80 text-sm mt-2">Formulario oficial para la incorporación de personal académico y científico / Official form for the incorporation of academic and scientific staff.</p>
+                            <p class="text-white/80 text-sm mt-2">Formulario oficial para la incorporaciÃ³n de personal acadÃ©mico y cientÃ­fico / Official form for the incorporation of academic and scientific staff.</p>
                         </div>
                     </div>
                     <!-- Main Form Card -->
@@ -164,7 +164,7 @@ try {
                                         </label>
                                         <label class="flex flex-col gap-2">
                                             <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Apellidos / Surnames</p>
-                                            <input class="form-input rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary placeholder:text-slate-400 dark:placeholder:text-slate-600 h-12 <?= $isNewStay ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : '' ?>" placeholder="Ej: García Martínez / e.g., Smith Jones" type="text" name="apellidos" value="<?= $isNewStay ? $prefillSafe('apellidos') : '' ?>" <?= $isNewStay ? 'readonly aria-readonly=\"true\"' : '' ?> required />
+                                            <input class="form-input rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary placeholder:text-slate-400 dark:placeholder:text-slate-600 h-12 <?= $isNewStay ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : '' ?>" placeholder="Ej: GarcÃ­a MartÃ­nez / e.g., Smith Jones" type="text" name="apellidos" value="<?= $isNewStay ? $prefillSafe('apellidos') : '' ?>" <?= $isNewStay ? 'readonly aria-readonly=\"true\"' : '' ?> required />
                                         </label>
                                         <label class="flex flex-col gap-2 md:col-span-2">
                                             <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">DNI/Pasaporte / DNI/Passport</p>
@@ -181,49 +181,49 @@ try {
                                         <label class="flex flex-col gap-2">
                                             <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Teléfono - Prefijo / Phone - Country Code</p>
                                             <select class="form-select rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary h-12" name="phone_prefix" required>
-                                                <option value="+34" selected>🇪🇸 España / Spain (+34)</option>
-                                                <option value="+1">🇺🇸 Estados Unidos / USA (+1)</option>
-                                                <option value="+44">🇬🇧 Reino Unido / UK (+44)</option>
-                                                <option value="+33">🇫🇷 Francia / France (+33)</option>
-                                                <option value="+49">🇩🇪 Alemania / Germany (+49)</option>
-                                                <option value="+39">🇮🇹 Italia / Italy (+39)</option>
-                                                <option value="+81">🇯🇵 Japón / Japan (+81)</option>
-                                                <option value="+86">🇨🇳 China (+86)</option>
-                                                <option value="+91">🇮🇳 India (+91)</option>
-                                                <option value="+55">🇧🇷 Brasil / Brazil (+55)</option>
-                                                <option value="+52">🇲🇽 México / Mexico (+52)</option>
-                                                <option value="+54">🇦🇷 Argentina (+54)</option>
-                                                <option value="+56">🇨🇱 Chile (+56)</option>
-                                                <option value="+506">🇨🇷 Costa Rica (+506)</option>
-                                                <option value="+57">🇨🇴 Colombia (+57)</option>
-                                                <option value="+51">🇵🇪 Perú / Peru (+51)</option>
-                                                <option value="+58">🇻🇪 Venezuela (+58)</option>
-                                                <option value="+36">🇭🇺 Hungría / Hungary (+36)</option>
-                                                <option value="+48">🇵🇱 Polonia / Poland (+48)</option>
-                                                <option value="+31">🇳🇱 Países Bajos / Netherlands (+31)</option>
-                                                <option value="+32">🇧🇪 Bélgica / Belgium (+32)</option>
-                                                <option value="+43">🇦🇹 Austria (+43)</option>
-                                                <option value="+41">🇨🇭 Suiza / Switzerland (+41)</option>
-                                                <option value="+46">🇸🇪 Suecia / Sweden (+46)</option>
-                                                <option value="+47">🇳🇴 Noruega / Norway (+47)</option>
-                                                <option value="+45">🇩🇰 Dinamarca / Denmark (+45)</option>
-                                                <option value="+358">🇫🇮 Finlandia / Finland (+358)</option>
-                                                <option value="+30">🇬🇷 Grecia / Greece (+30)</option>
-                                                <option value="+60">🇲🇾 Malasia / Malaysia (+60)</option>
-                                                <option value="+65">🇸🇬 Singapur / Singapore (+65)</option>
-                                                <option value="+62">🇮🇩 Indonesia (+62)</option>
-                                                <option value="+66">🇹🇭 Tailandia / Thailand (+66)</option>
-                                                <option value="+84">🇻🇳 Vietnam (+84)</option>
-                                                <option value="+82">🇰🇷 Corea del Sur / South Korea (+82)</option>
-                                                <option value="+61">🇦🇺 Australia (+61)</option>
-                                                <option value="+64">🇳🇿 Nueva Zelanda / New Zealand (+64)</option>
-                                                <option value="+27">🇿🇦 Sudáfrica / South Africa (+27)</option>
-                                                <option value="+20">🇪🇬 Egipto / Egypt (+20)</option>
-                                                <option value="+212">🇲🇦 Marruecos / Morocco (+212)</option>
+                                                <option value="+34" selected>ðŸ‡ªðŸ‡¸ EspaÃ±a / Spain (+34)</option>
+                                                <option value="+1">ðŸ‡ºðŸ‡¸ Estados Unidos / USA (+1)</option>
+                                                <option value="+44">ðŸ‡¬ðŸ‡§ Reino Unido / UK (+44)</option>
+                                                <option value="+33">ðŸ‡«ðŸ‡· Francia / France (+33)</option>
+                                                <option value="+49">ðŸ‡©ðŸ‡ª Alemania / Germany (+49)</option>
+                                                <option value="+39">ðŸ‡®ðŸ‡¹ Italia / Italy (+39)</option>
+                                                <option value="+81">ðŸ‡¯ðŸ‡µ JapÃ³n / Japan (+81)</option>
+                                                <option value="+86">ðŸ‡¨ðŸ‡³ China (+86)</option>
+                                                <option value="+91">ðŸ‡®ðŸ‡³ India (+91)</option>
+                                                <option value="+55">ðŸ‡§ðŸ‡· Brasil / Brazil (+55)</option>
+                                                <option value="+52">ðŸ‡²ðŸ‡½ MÃ©xico / Mexico (+52)</option>
+                                                <option value="+54">ðŸ‡¦ðŸ‡· Argentina (+54)</option>
+                                                <option value="+56">ðŸ‡¨ðŸ‡± Chile (+56)</option>
+                                                <option value="+506">ðŸ‡¨ðŸ‡· Costa Rica (+506)</option>
+                                                <option value="+57">ðŸ‡¨ðŸ‡´ Colombia (+57)</option>
+                                                <option value="+51">ðŸ‡µðŸ‡ª PerÃº / Peru (+51)</option>
+                                                <option value="+58">ðŸ‡»ðŸ‡ª Venezuela (+58)</option>
+                                                <option value="+36">ðŸ‡­ðŸ‡º HungrÃ­a / Hungary (+36)</option>
+                                                <option value="+48">ðŸ‡µðŸ‡± Polonia / Poland (+48)</option>
+                                                <option value="+31">ðŸ‡³ðŸ‡± Países Bajos / Netherlands (+31)</option>
+                                                <option value="+32">ðŸ‡§ðŸ‡ª BÃ©lgica / Belgium (+32)</option>
+                                                <option value="+43">ðŸ‡¦ðŸ‡¹ Austria (+43)</option>
+                                                <option value="+41">ðŸ‡¨ðŸ‡­ Suiza / Switzerland (+41)</option>
+                                                <option value="+46">ðŸ‡¸ðŸ‡ª Suecia / Sweden (+46)</option>
+                                                <option value="+47">ðŸ‡³ðŸ‡´ Noruega / Norway (+47)</option>
+                                                <option value="+45">ðŸ‡©ðŸ‡° Dinamarca / Denmark (+45)</option>
+                                                <option value="+358">ðŸ‡«ðŸ‡® Finlandia / Finland (+358)</option>
+                                                <option value="+30">ðŸ‡¬ðŸ‡· Grecia / Greece (+30)</option>
+                                                <option value="+60">ðŸ‡²ðŸ‡¾ Malasia / Malaysia (+60)</option>
+                                                <option value="+65">ðŸ‡¸ðŸ‡¬ Singapur / Singapore (+65)</option>
+                                                <option value="+62">ðŸ‡®ðŸ‡© Indonesia (+62)</option>
+                                                <option value="+66">ðŸ‡¹ðŸ‡­ Tailandia / Thailand (+66)</option>
+                                                <option value="+84">ðŸ‡»ðŸ‡³ Vietnam (+84)</option>
+                                                <option value="+82">ðŸ‡°ðŸ‡· Corea del Sur / South Korea (+82)</option>
+                                                <option value="+61">ðŸ‡¦ðŸ‡º Australia (+61)</option>
+                                                <option value="+64">ðŸ‡³ðŸ‡¿ Nueva Zelanda / New Zealand (+64)</option>
+                                                <option value="+27">ðŸ‡¿ðŸ‡¦ SudÃ¡frica / South Africa (+27)</option>
+                                                <option value="+20">ðŸ‡ªðŸ‡¬ Egipto / Egypt (+20)</option>
+                                                <option value="+212">ðŸ‡²ðŸ‡¦ Marruecos / Morocco (+212)</option>
                                             </select>
                                         </label>
                                         <label class="flex flex-col gap-2">
-                                            <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Teléfono - Número / Phone - Number <span class="text-red-500">*</span></p>
+                                            <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Teléfono - NÃºmero / Phone - Number <span class="text-red-500">*</span></p>
                                             <input class="form-input rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary placeholder:text-slate-400 dark:placeholder:text-slate-600 h-12" placeholder="ej: 612345678 / e.g., 612345678" type="tel" name="phone_number" value="<?= $isNewStay ? $prefillSafe('phone_number') : '' ?>" <?= $isNewStay ? 'readonly aria-readonly=\"true\"' : '' ?> required />
                                         </label>
                                         <label class="flex flex-col gap-2">
@@ -255,7 +255,7 @@ try {
                                             <input id="photoUpload" name="photo" type="file" accept="image/*" class="sr-only" <?= (!$isNewStay || empty($prefill['foto_url'])) ? 'required' : '' ?> />
                                             <span id="photoDropHint" class="flex flex-col items-center gap-2">
                                                 <span class="material-symbols-outlined text-4xl text-primary">photo_camera</span>
-                                                <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Arrastra y suelta aquí una foto / Drag & drop a photo here</span>
+                                                <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Arrastra y suelta aquÃ­ una foto / Drag & drop a photo here</span>
                                                 <span class="text-xs text-slate-500 dark:text-slate-400">JPG/PNG hasta 5 MB / JPG/PNG up to 5 MB</span>
                                             </span>
                                             <div id="photoPreview" class="hidden flex flex-col items-center gap-2">
@@ -273,7 +273,7 @@ try {
                             <div>
                                 <h3 class="text-primary text-sm font-bold uppercase tracking-wider mb-6 flex items-center gap-2">
                                     <span class="material-symbols-outlined text-sm">school</span>
-                                    Origen Académico / Academic Background
+                                    Origen AcadÃ©mico / Academic Background
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <label class="flex flex-col gap-2">
@@ -281,7 +281,7 @@ try {
                                         <input class="form-input rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary placeholder:text-slate-400 dark:placeholder:text-slate-600 h-12" placeholder="Chicago University" type="text" name="institucion" required />
                                     </label>
                                     <label class="flex flex-col gap-2">
-                                        <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">País de la institución / Institution Country</p>
+                                        <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">País de la instituciÃ³n / Institution Country</p>
                                         <input class="form-input rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary placeholder:text-slate-400 dark:placeholder:text-slate-600 h-12" placeholder="United States" type="text" name="pais" required />
                                     </label>
                                 </div>
@@ -297,12 +297,12 @@ try {
                                     <label class="flex flex-col gap-2 md:col-span-1">
                                         <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Motivo / Purpose</p>
                                         <select name="motivo" required class="form-select rounded-lg border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-primary focus:border-primary h-12 text-slate-700 dark:text-slate-300">
-                                            <option disabled="" selected="" value="">Seleccione categoría / Select position</option>
+                                            <option disabled="" selected="" value="">Seleccione categorÃ­a / Select position</option>
                                             <option value="PDI">PDI (Personal Docente de Investigacion / Teaching and Research Staff)</option>
                                             <option value="Postdoctoral">Investigador Postdoctoral / Postdoctoral Researcher</option>
                                             <option value="Predoctoral">Investigador Predoctoral / Predoctoral Researcher</option>
                                             <option value="TFG">TFG (Trabajo Final de Grado / Bachelor's Thesis)</option>
-                                            <option value="TFM">TFM (Trabajo Final de Máster / Master's Thesis)</option>
+                                            <option value="TFM">TFM (Trabajo Final de MÃ¡ster / Master's Thesis)</option>
                                             <option value="ERASMUS">ERASMUS</option>
                                             <option value="Visitante">Investigador Visitante / Visiting Researcher</option>
                                             <option value="Otros">Otros / Others</option>
@@ -341,14 +341,14 @@ try {
                                 <div class="flex items-start gap-3 p-4 bg-primary/5 rounded-lg border border-primary/10">
                                     <input id="acceptPrivacy" type="checkbox" name="accept_privacy" required class="h-4 w-4 text-primary border-slate-300 dark:border-slate-700 rounded mt-0.5 flex-shrink-0">
                                     <label for="acceptPrivacy" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed cursor-pointer">
-                                        Acepto la <a href="#" id="privacyLinkEs" class="font-semibold text-primary hover:underline">política de privacidad</a> y el tratamiento de datos para fines académicos de la institución. / I accept the <a href="#" id="privacyLinkEn" class="font-semibold text-primary hover:underline">privacy policy</a> and data processing for academic purposes of the institution.
+                                        Acepto la <a href="#" id="privacyLinkEs" class="font-semibold text-primary hover:underline">polÃ­tica de privacidad</a> y el tratamiento de datos para fines acadÃ©micos de la instituciÃ³n. / I accept the <a href="#" id="privacyLinkEn" class="font-semibold text-primary hover:underline">privacy policy</a> and data processing for academic purposes of the institution.
                                     </label>
                                 </div>
                                 <!-- Confidentiality Commitment Checkbox -->
                                 <div class="flex items-start gap-3 p-4 bg-primary/5 rounded-lg border border-primary/10">
                                     <input id="acceptConfidentiality" type="checkbox" name="accept_confidentiality" required class="h-4 w-4 text-primary border-slate-300 dark:border-slate-700 rounded mt-0.5 flex-shrink-0">
                                     <label for="acceptConfidentiality" class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed cursor-pointer">
-                                        Acepto el <a href="/GESTIUBO/docs/pruebaPDF.pdf" download="compromiso_confidencialidad.pdf" id="confidentialityLinkEs" class="font-semibold text-primary hover:underline">compromiso de confidencialidad</a>. / I accept the <a href="/GESTIUBO/docs/pruebaPDF.pdf" download="confidentiality_commitment.pdf" id="confidentialityLinkEn" class="font-semibold text-primary hover:underline">confidentiality commitment</a>.
+                                        Acepto el <a href="/iubolab/docs/pruebaPDF.pdf" download="compromiso_confidencialidad.pdf" id="confidentialityLinkEs" class="font-semibold text-primary hover:underline">compromiso de confidencialidad</a>. / I accept the <a href="/iubolab/docs/pruebaPDF.pdf" download="confidentiality_commitment.pdf" id="confidentialityLinkEn" class="font-semibold text-primary hover:underline">confidentiality commitment</a>.
                                     </label>
                                 </div>
                                 <button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg transition-all transform hover:scale-[1.01] flex items-center justify-center gap-2" type="submit">
@@ -363,14 +363,14 @@ try {
                     </div>
                     <!-- Footer -->
                     <footer class="text-center py-6 text-slate-500 text-sm">
-                        © 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
+                        Â© 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
                     </footer>
                 </div>
             </main>
         </div>
     </div>
     <script>
-        // Toast reutilizable con estética del panel (morado)
+        // Toast reutilizable con estÃ©tica del panel (morado)
         const toastHost = (() => {
             const existing = document.getElementById('toastHost');
             if (existing) return existing;
@@ -427,7 +427,7 @@ try {
                 });
             }
 
-            // Carga dinámica de grupos desde la base de datos
+            // Carga dinÃ¡mica de grupos desde la base de datos
             const renderGroupPlaceholder = (text) => {
                 if (!groupSelect) return;
                 groupSelect.innerHTML = '';
@@ -523,7 +523,7 @@ try {
                     return;
                 }
                 if (file.size > maxBytes) {
-                    showPhotoError('El archivo es demasiado grande. Máximo 5 MB. / File is too large. Max 5 MB.');
+                    showPhotoError('El archivo es demasiado grande. MÃ¡ximo 5 MB. / File is too large. Max 5 MB.');
                     return;
                 }
                 clearPhotoError();
@@ -562,7 +562,7 @@ try {
                 });
             });
 
-            // Validación de disponibilidad de email y username (solo en registro nuevo, no en newstay)
+            // ValidaciÃ³n de disponibilidad de email y username (solo en registro nuevo, no en newstay)
             const availabilityErrors = new Map();
             const emailInput = form?.querySelector('input[name="email"]');
             const usernameInput = form?.querySelector('input[name="username"]');
@@ -603,7 +603,7 @@ try {
                         availabilityErrors.delete(type);
                     } else {
                         const msg = type === 'email' 
-                            ? 'Este email ya está registrado / This email is already registered'
+                            ? 'Este email ya estÃ¡ registrado / This email is already registered'
                             : 'Este usuario ya existe / This username already exists';
                         addFieldError(field, msg);
                         availabilityErrors.set(type, msg);
@@ -711,9 +711,9 @@ try {
             personalFijo?.addEventListener('change', toggleFechas);
             toggleFechas();
 
-            // Validación visual + envío
+            // ValidaciÃ³n visual + envÃ­o
             const submitBtn = form?.querySelector('button[type="submit"]');
-            // Evita envíos concurrentes incluso si el handler se adjunta dos veces
+            // Evita envÃ­os concurrentes incluso si el handler se adjunta dos veces
             let isSubmitting = false;
             const releaseSubmit = () => {
                 isSubmitting = false;
@@ -726,7 +726,7 @@ try {
                 if (el.type === 'file') return false;
                 if (el.type === 'checkbox') return false;
                 if (el.disabled) return false;
-                // En nueva estancia solo saltamos las credenciales; datos personales sí deben ir (ya vienen pre-rellenados)
+                // En nueva estancia solo saltamos las credenciales; datos personales sÃ­ deben ir (ya vienen pre-rellenados)
                 if (isNewStay && (el.name === 'password' || el.name === 'password_confirm')) return false;
                 return el.hasAttribute('required');
             });
@@ -822,13 +822,13 @@ try {
                         const label = form?.querySelector(`label[for="${checkbox.id}"]`);
                         if (label) {
                             label.classList.add('input-error');
-                            showFieldError(label, 'Debe aceptar este término / You must accept this term');
+                            showFieldError(label, 'Debe aceptar este tÃ©rmino / You must accept this term');
                         }
                         if (!firstInvalid) firstInvalid = checkbox;
                     }
                 });
 
-                // Validar disponibilidad de email y username (después de haber ejecutado validateAvailability)
+                // Validar disponibilidad de email y username (despuÃ©s de haber ejecutado validateAvailability)
                 if (availabilityErrors.size > 0) {
                     const errorMsg = Array.from(availabilityErrors.values()).join('. ');
                     showToast(errorMsg, 'error');
@@ -890,7 +890,7 @@ try {
                         });
                         const upJson = await upRes.json().catch(() => ({}));
                         if (!upRes.ok || upJson.error) {
-                            showToast(upJson.error || 'No se pudo subir la foto. Revisa tu conexión.', 'error');
+                            showToast(upJson.error || 'No se pudo subir la foto. Revisa tu conexiÃ³n.', 'error');
                             releaseSubmit();
                             return;
                         }
@@ -931,7 +931,7 @@ try {
                     } catch (_) {
                         const text = await res.text().catch(() => '');
                         if (res.status === 401) {
-                            showToast('Sesión expirada. Vuelve a iniciar sesión.', 'error');
+                            showToast('SesiÃ³n expirada. Vuelve a iniciar sesión.', 'error');
                             window.location.href = 'acceso';
                             return;
                         }
@@ -940,10 +940,10 @@ try {
                         return;
                     }
                     if (!res.ok || (json && json.error)) {
-                        const message = (json && json.error) || 'Error al registrar. Inténtelo de nuevo.';
+                        const message = (json && json.error) || 'Error al registrar. IntÃ©ntelo de nuevo.';
                         const lower = message.toLowerCase();
                         const targets = [];
-                        // Asignar campo según mensaje
+                        // Asignar campo segÃºn mensaje
                         if (lower.includes('usuario')) targets.push(form.querySelector('input[name="username"]'));
                         if (lower.includes('dni')) targets.push(form.querySelector('input[name="dni_pasaporte"]'));
                         if (lower.includes('inicio')) targets.push(fechaInicio);
@@ -951,7 +951,7 @@ try {
                         if (lower.includes('fecha')) {
                             targets.push(fechaInicio, fechaFin);
                         }
-                        // Duplicados explícitos (409) se mantienen
+                        // Duplicados explÃ­citos (409) se mantienen
                         if (res.status === 409 && targets.length === 0) {
                             const targetField = json.field || 'username';
                             const fieldEl = form.querySelector(`input[name="${targetField}"]`) ||
@@ -993,34 +993,35 @@ try {
     <div id="privacyModal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50 p-4">
         <div class="relative w-full max-w-2xl rounded-2xl bg-white dark:bg-slate-900 shadow-xl overflow-hidden">
             <div class="flex items-start justify-between border-b border-slate-200 dark:border-slate-800 p-5">
-                <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">Política de Privacidad / Privacy Policy</h3>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-slate-100">PolÃ­tica de Privacidad / Privacy Policy</h3>
                 <button type="button" id="privacyClose" class="text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100" aria-label="Cerrar">X</button>
             </div>
             <div class="p-5 max-h-[60vh] overflow-y-auto text-sm text-slate-700 dark:text-slate-200 space-y-4">
-                <p><strong>Política de Privacidad</strong>  Al registrarte en este sitio web y/o utilizar nuestros servicios, declaras haber leído, comprendido y aceptado los Términos y Condiciones de Uso, así como la Política de Privacidad.
+                <p><strong>PolÃ­tica de Privacidad</strong>  Al registrarte en este sitio web y/o utilizar nuestros servicios, declaras haber leÃ­do, comprendido y aceptado los TÃ©rminos y Condiciones de Uso, asÃ­ como la PolÃ­tica de Privacidad.
 
-En cumplimiento de lo dispuesto en el Reglamento (UE) 2016/679 (Reglamento General de Protección de Datos – RGPD) y en la Ley Orgánica 3/2018 (LOPDGDD), te informamos de que los datos personales facilitados serán tratados de forma confidencial y se incorporarán a un fichero responsabilidad del titular de esta web.
+En cumplimiento de lo dispuesto en el Reglamento (UE) 2016/679 (Reglamento General de ProtecciÃ³n de Datos â€“ RGPD) y en la Ley OrgÃ¡nica 3/2018 (LOPDGDD), te informamos de que los datos personales facilitados serÃ¡n tratados de forma confidencial y se incorporarÃ¡n a un fichero responsabilidad del titular de esta web.
 
-La finalidad del tratamiento de los datos es la gestión de la relación con el usuario, la prestación de los servicios solicitados y, en su caso, el envío de comunicaciones comerciales, siempre que se haya otorgado el consentimiento expreso.
+La finalidad del tratamiento de los datos es la gestiÃ³n de la relaciÃ³n con el usuario, la prestaciÃ³n de los servicios solicitados y, en su caso, el envÃ­o de comunicaciones comerciales, siempre que se haya otorgado el consentimiento expreso.
 
-Asimismo, se informa al usuario de que puede ejercer sus derechos de acceso, rectificación, supresión, oposición, limitación del tratamiento y portabilidad de sus datos, mediante solicitud escrita dirigida al responsable del tratamiento.
+Asimismo, se informa al usuario de que puede ejercer sus derechos de acceso, rectificaciÃ³n, supresiÃ³n, oposiciÃ³n, limitaciÃ³n del tratamiento y portabilidad de sus datos, mediante solicitud escrita dirigida al responsable del tratamiento.
 
-El usuario garantiza que los datos proporcionados son veraces y se compromete a comunicar cualquier modificación de los mismos.</p>
+El usuario garantiza que los datos proporcionados son veraces y se compromete a comunicar cualquier modificaciÃ³n de los mismos.</p>
                 <p><strong>Data Privacy Policy</strong>  By registering on this website and/or using our services, you declare that you have read, understood, and accepted the Terms and Conditions of Use and the Privacy Policy.
 
-In accordance with the provisions of Regulation (EU) 2016/679 (General Data Protection Regulation – GDPR) and Organic Law 3/2018 (LOPDGDD), we inform you that the personal data provided will be processed confidentially and incorporated into a file under the responsibility of the website owner.
+In accordance with the provisions of Regulation (EU) 2016/679 (General Data Protection Regulation â€“ GDPR) and Organic Law 3/2018 (LOPDGDD), we inform you that the personal data provided will be processed confidentially and incorporated into a file under the responsibility of the website owner.
 
 The purpose of data processing is to manage the relationship with the user, provide the requested services, and, where applicable, send commercial communications, provided that explicit consent has been given.
 
 You are also informed that you may exercise your rights of access, rectification, erasure, objection, restriction of processing, and data portability by submitting a written request to the data controller.
 
 The user guarantees that the data provided is accurate and undertakes to notify any changes.</p>
-                <p>Para más detalles, consulte la normativa de protección de datos vigente en España (LOPDGDD y RGPD) o contacte con el administrador del sistema. / For more details, consult the current data protection regulations in Spain (LOPDGDD and GDPR) or contact the system administrator.</p>
+                <p>Para mÃ¡s detalles, consulte la normativa de protecciÃ³n de datos vigente en EspaÃ±a (LOPDGDD y RGPD) o contacte con el administrador del sistema. / For more details, consult the current data protection regulations in Spain (LOPDGDD and GDPR) or contact the system administrator.</p>
             </div>
         </div>
     </div>
 </body>
 
 </html>
+
 
 

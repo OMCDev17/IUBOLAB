@@ -51,13 +51,13 @@ function getSessionUser(): ?array
 
 function loginRoute(): string
 {
-    $script = $_SERVER['SCRIPT_NAME'] ?? '/GESTIUBO/index.php';
+    $script = $_SERVER['SCRIPT_NAME'] ?? '/iubolab/index.php';
     $base = str_contains($script, '/api/')
         ? dirname(dirname($script))
         : dirname($script);
     $base = rtrim(str_replace('\\', '/', $base), '/');
     if ($base === '') {
-        $base = '/GESTIUBO';
+        $base = '/iubolab';
     }
     return $base . '/acceso';
 }
@@ -108,5 +108,6 @@ function requireRole($roles, bool $isApi = false): void
         exit;
     }
 }
+
 
 
