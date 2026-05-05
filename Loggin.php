@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require __DIR__ . '/api/auth.php';
 
 // If already logged in, redirect to the correct dashboard.
@@ -81,15 +81,15 @@ if ($user) {
                             desc: 'Ingresa tus credenciales para acceder.',
                             userLabel: 'Usuario o Correo ElectrÃƒÂ³nico',
                             userPlaceholder: 'ej. usuario_123',
-                            passLabel: 'ContraseÃ±a',
-                            forgot: 'Â¿Olvidaste tu contraseÃ±a?',
-                            remember: 'Recordar mi sesiÃ³n',
-                            signIn: 'Iniciar sesiÃ³n',
-                            noAccount: 'Â¿No tienes una cuenta?',
+                            passLabel: 'Contraseña',
+                            forgot: '¿Olvidaste tu contraseña?',
+                            remember: 'Recordar mi sesión',
+                            signIn: 'Iniciar sesión',
+                            noAccount: '¿No tienes una cuenta?',
                             createAccount: 'Crear Cuenta de Miembro',
                             alertForgot: 'Se ha enviado un correo electrÃƒÂ³nico de recuperaciÃƒÂ³n a su direcciÃƒÂ³n registrada.',
                             alertCreate: 'Solicitud de registro enviada al administrador.',
-                            signingIn: 'Iniciando sesiÃ³n...'
+                            signingIn: 'Iniciando sesión...'
                         },
                         en: {
                             title: 'Human Resources',
@@ -178,8 +178,8 @@ if ($user) {
                 </div>
                 <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <label class="text-sm font-semibold text-slate-700" for="password">ContraseÃ±a</label>
-                        <a id="forgotLink" class="text-xs font-bold text-lab-accent hover:text-lab-accentHover transition-colors" href="recuperacion.html">Â¿Olvidaste tu contraseÃ±a?</a>
+                        <label class="text-sm font-semibold text-slate-700" for="password">Contraseña</label>
+                        <a id="forgotLink" class="text-xs font-bold text-lab-accent hover:text-lab-accentHover transition-colors" href="recuperacion.html">¿Olvidaste tu contraseña?</a>
                     </div>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
@@ -188,17 +188,17 @@ if ($user) {
                 </div>
                 <div class="flex items-center">
                     <input class="w-4 h-4 text-lab-accent border-slate-300 rounded focus:ring-lab-accent" id="remember" type="checkbox" />
-                    <label class="ml-2 text-sm text-slate-600 cursor-pointer" for="remember">Recordar mi sesiÃ³n</label>
+                    <label class="ml-2 text-sm text-slate-600 cursor-pointer" for="remember">Recordar mi sesión</label>
                 </div>
                 <button id="loginButton" class="w-full py-4 bg-lab-accent text-white font-bold rounded-2xl hover:bg-lab-accentHover shadow-lg shadow-purple-100 transition-all flex items-center justify-center gap-2 group" type="submit">
-                    <span id="loginButtonText">Iniciar sesiÃ³n</span>
+                    <span id="loginButtonText">Iniciar sesión</span>
                     <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">login</span>
                 </button>
                 <p id="loginError" class="text-sm text-red-600 hidden mt-2"></p>
             </form>
             <div class="mt-12 pt-8 border-t border-slate-100 text-center">
                 <p class="text-slate-500 text-sm">
-                    Â¿No tienes una cuenta?
+                    ¿No tienes una cuenta?
                     <a class="text-lab-accent font-bold hover:underline" href="registro">Crear Cuenta de Miembro</a>
                 </p>
             </div>
@@ -215,7 +215,7 @@ if ($user) {
             loginButton.disabled = isLoading;
             loginButton.classList.toggle('opacity-80', isLoading);
             loginButton.classList.toggle('cursor-not-allowed', isLoading);
-            loginButtonText.textContent = isLoading ? 'Iniciando sesiÃ³n...' : 'Iniciar sesiÃ³n';
+            loginButtonText.textContent = isLoading ? 'Iniciando sesión...' : 'Iniciar sesión';
         }
 
         async function handleLogin(event) {
@@ -226,7 +226,7 @@ if ($user) {
             const password = document.getElementById('password').value;
 
             if (!username || !password) {
-                loginError.textContent = 'Por favor, introduce usuario y contraseÃ±a.';
+                loginError.textContent = 'Por favor, introduce usuario y contraseña.';
                 loginError.classList.remove('hidden');
                 return;
             }
@@ -248,7 +248,7 @@ if ($user) {
                 const result = await resp.json();
 
                 if (!resp.ok) {
-                    loginError.textContent = result.error || 'Usuario o contraseÃ±a incorrectos.';
+                    loginError.textContent = result.error || 'Usuario o contraseña incorrectos.';
                     loginError.classList.remove('hidden');
                     return;
                 }

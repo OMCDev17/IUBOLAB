@@ -488,7 +488,7 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
             try {
                 const resp = await fetch('api/employees.php');
                 const json = await resp.json();
-                if (!Array.isArray(json.employees)) throw new Error('Respuesta invÃƒÆ’Ã†â€™Ãƒâ€šÂ¡lida');
+                if (!Array.isArray(json.employees)) throw new Error('Respuesta invÃƒÆ’Ã†â€™Ãƒâ€š¡lida');
                 employees = json.employees.map((emp) => ({
                     ...emp,
                     id: Number(emp.id),
@@ -675,7 +675,7 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
             try {
                 const resp = await fetch('api/group_requests.php');
                 const json = await resp.json();
-                if (!Array.isArray(json.requests)) throw new Error('Respuesta invÃƒÆ’Ã†â€™Ãƒâ€šÂ¡lida');
+                if (!Array.isArray(json.requests)) throw new Error('Respuesta invÃƒÆ’Ã†â€™Ãƒâ€š¡lida');
                 pendingRequests = json.requests.map((req) => ({
                     ...req,
                     id: Number(req.id ?? req.request_id ?? req.requestId ?? 0),

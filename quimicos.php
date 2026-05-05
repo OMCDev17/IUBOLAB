@@ -1,188 +1,149 @@
-<?php
+﻿<?php
 require __DIR__ . '/api/auth.php';
 requireRole(['empleado','supervisor','coordinador','admin']);
+require_once __DIR__ . '/api/stay_lifecycle.php';
 header('Content-Type: text/html; charset=UTF-8');
-
 $config = require __DIR__ . '/api/config.php';
 $mysqli = new mysqli($config['host'], $config['user'], $config['pass'], $config['db']);
 if ($mysqli->connect_errno) { die('Error de conexion con la base de datos.'); }
 $mysqli->set_charset($config['charset'] ?? 'utf8mb4');
-
 $user = getSessionUser();
 $userId = (int)($user['id'] ?? 0);
 $userRole = strtolower((string)($user['rol'] ?? ''));
 $userGroupId = (int)($user['group_id'] ?? 0);
 $isAdmin = $userRole === 'admin';
-$profileUrl = 'empleado';
-if ($isAdmin) {
-    $profileUrl = 'admin';
-} elseif (in_array($userRole, ['supervisor', 'coordinador'], true)) {
-    $profileUrl = 'coordinador';
+$isUserRole = $userRole === 'empleado';
+$profileUrl = $isAdmin ? 'admin.php' : (in_array($userRole, ['supervisor','coordinador'], true) ? 'supervisor.php' : 'empleado.php');
+
+// Acceso permitido solo con estancia activa (tambien para admin)
+$hasActiveStay = false;
+try {
+  expireStaysAndPendingRequests($mysqli);
+  $st = $mysqli->prepare("SELECT fecha_fin FROM stays WHERE employee_id=? AND status='active' ORDER BY updated_at DESC LIMIT 1");
+  if ($st) {
+    $st->bind_param('i', $userId);
+    $st->execute();
+    $rs = $st->get_result();
+    if ($rs && ($row = $rs->fetch_assoc())) {
+      $hasActiveStay = true;
+      $fin = (string)($row['fecha_fin'] ?? '');
+      if ($fin !== '' && $fin !== '2100-01-01') {
+        $today = new DateTime('today');
+        $end = new DateTime($fin);
+        if ($end < $today) { $hasActiveStay = false; }
+      }
+    }
+    $st->close();
+  }
+} catch (Throwable $e) {
+  $hasActiveStay = false;
 }
 
-$mysqli->query("CREATE TABLE IF NOT EXISTS chemicals (
- id INT AUTO_INCREMENT PRIMARY KEY,
- cas_nr VARCHAR(64) NOT NULL,
- proveedor VARCHAR(150) NOT NULL,
- nombre VARCHAR(180) NOT NULL,
- grupo_owner_id INT NOT NULL,
- localizacion VARCHAR(180) NOT NULL,
- cantidad DECIMAL(12,2) NOT NULL DEFAULT 0,
- acceso ENUM('publico','privado') NOT NULL DEFAULT 'publico',
- grupo_privado_id INT NULL,
- created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
- updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- INDEX idx_nombre (nombre), INDEX idx_grupo_owner_id (grupo_owner_id), INDEX idx_grupo_privado_id (grupo_privado_id)
-)");
-$mysqli->query("CREATE TABLE IF NOT EXISTS chemicals_log (
- id INT AUTO_INCREMENT PRIMARY KEY,
- chemical_id INT NOT NULL,
- action_type ENUM('update_cantidad','prestamo','create','update_full') NOT NULL,
- cantidad_anterior DECIMAL(12,2) NULL,
- cantidad_nueva DECIMAL(12,2) NULL,
- cantidad_modificada DECIMAL(12,2) NULL,
- usuario_id INT NULL,
- usuario_nombre VARCHAR(180) NULL,
- usuario_rol VARCHAR(50) NULL,
- detalle TEXT NULL,
- created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
- INDEX idx_chemical (chemical_id), INDEX idx_created (created_at)
-)");
-
+if (!$hasActiveStay) {
+  ?>
+  <!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Acceso restringido</title><meta http-equiv="refresh" content="10;url=<?= htmlspecialchars($profileUrl, ENT_QUOTES, 'UTF-8') ?>"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png"><link href="https://fonts.googleapis.com/css2?family=Argentum+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" /><style>body{font-family:'Argentum Sans',sans-serif;}</style><script>tailwind.config={theme:{extend:{colors:{primary:'#5c068c','background-light':'#f8f6f6'}}}};</script></head>
+  <body class="bg-background-light min-h-screen text-slate-900"><div class="min-h-screen flex items-center justify-center p-4"><div class="w-full max-w-xl rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm"><h1 class="text-2xl font-bold text-primary">No puedes acceder a Químicos</h1><p class="mt-3 text-slate-600">Solo los usuarios con estancia activa pueden entrar en esta sección. Si tu estancia está pendiente, finalizada o no existe, el acceso queda bloqueado.</p><p class="mt-4 text-sm text-slate-500">Serás redirigido a tu perfil en <span id="countdown">10</span> segundos.</p><a href="<?= htmlspecialchars($profileUrl, ENT_QUOTES, 'UTF-8') ?>" class="inline-flex mt-6 rounded-xl h-11 px-4 border border-primary text-primary text-sm font-bold items-center hover:bg-primary hover:text-white transition-colors">Volver ahora al perfil</a></div></div><script>let s=10;const el=document.getElementById('countdown');setInterval(()=>{s=Math.max(0,s-1);if(el)el.textContent=String(s);},1000);</script></body></html>
+  <?php
+  exit;
+}
 $groups = [];
-$gr = $mysqli->query("SELECT id, name FROM groups ORDER BY name");
+// Mostrar solo grupos activos (soporta distintos esquemas: active, is_active o deleted_at)
+$groupWhere = '';
+$groupCols = [];
+$gc = $mysqli->query("SHOW COLUMNS FROM groups");
+while ($gc && ($col = $gc->fetch_assoc())) { $groupCols[] = strtolower((string)($col['Field'] ?? '')); }
+if (in_array('is_active', $groupCols, true)) {
+  $groupWhere = ' WHERE is_active = 1';
+} elseif (in_array('active', $groupCols, true)) {
+  $groupWhere = ' WHERE active = 1';
+} elseif (in_array('deleted_at', $groupCols, true)) {
+  $groupWhere = ' WHERE deleted_at IS NULL';
+}
+$gr = $mysqli->query("SELECT id, name FROM groups" . $groupWhere . " ORDER BY name ASC");
 while ($gr && ($g = $gr->fetch_assoc())) { $groups[] = $g; }
-$hasOwnerId = false;
-$hasPrivateId = false;
-$colRes = $mysqli->query("SHOW COLUMNS FROM chemicals");
-while ($colRes && ($col = $colRes->fetch_assoc())) {
-    if (($col['Field'] ?? '') === 'grupo_owner_id') $hasOwnerId = true;
-    if (($col['Field'] ?? '') === 'grupo_privado_id') $hasPrivateId = true;
-}
-$defaultGroupId = isset($groups[0]['id']) ? (int)$groups[0]['id'] : 0;
-if ($defaultGroupId <= 0 && $userGroupId > 0) {
-    $defaultGroupId = $userGroupId;
-}
-if ($defaultGroupId <= 0) {
-    $defaultGroupId = 1;
-}
 
-$check = $mysqli->query('SELECT COUNT(*) c FROM chemicals');
-$count = (int)($check ? ($check->fetch_assoc()['c'] ?? 0) : 0);
-if ($count === 0) {
-    $stmt = $mysqli->prepare("INSERT INTO chemicals (cas_nr, proveedor, nombre, grupo_owner_id, localizacion, cantidad, acceso, grupo_privado_id) VALUES (?,?,?,?,?,?,?,?)");
-    $acc = 'publico'; $null = null;
-    $samples = [
-      ['67-56-1','ChemLab SA','Metanol','Armario A1',120.0],
-      ['64-17-5','Reactivos Norte','Etanol absoluto','Armario B2',95.0],
-      ['7732-18-5','AquaPure','Agua destilada','Almacen central',500.0]
-    ];
-    foreach ($samples as $s) {
-      [$cas,$prov,$nom,$loc,$cant] = $s;
-      $stmt->bind_param('sssidssi',$cas,$prov,$nom,$defaultGroupId,$loc,$cant,$acc,$null);
-      $stmt->execute();
-    }
-    $stmt->close();
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
-    if ($action === 'save_qty') {
-        $id = (int)($_POST['chemical_id'] ?? 0);
-        $qty = (float)($_POST['cantidad'] ?? 0);
-        if ($id > 0) {
-            $oldQty = null;
-            $s0 = $mysqli->prepare('SELECT cantidad FROM chemicals WHERE id=? LIMIT 1');
-            if ($s0) {
-                $s0->bind_param('i', $id);
-                $s0->execute();
-                $res0 = $s0->get_result();
-                if ($res0 && ($r0 = $res0->fetch_assoc())) {
-                    $oldQty = (float)$r0['cantidad'];
-                }
-                $s0->close();
-            }
-            $stmt = $mysqli->prepare('UPDATE chemicals SET cantidad=? WHERE id=?');
-            if ($stmt) {
-                $stmt->bind_param('di', $qty, $id);
-                $stmt->execute();
-                $stmt->close();
-            }
-            if ($oldQty !== null) {
-                $delta = $qty - $oldQty;
-                $userName = trim((string)(($user['nombre'] ?? '') . ' ' . ($user['apellidos'] ?? '')));
-                $detail = 'Actualización manual de cantidad';
-                $type = 'update_cantidad';
-                $sl = $mysqli->prepare('INSERT INTO chemicals_log (chemical_id, action_type, cantidad_anterior, cantidad_nueva, cantidad_modificada, usuario_id, usuario_nombre, usuario_rol, detalle) VALUES (?,?,?,?,?,?,?,?,?)');
-                if ($sl) {
-                    $sl->bind_param('isdddisss', $id, $type, $oldQty, $qty, $delta, $userId, $userName, $userRole, $detail);
-                    $sl->execute();
-                    $sl->close();
-                }
-            }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_all') {
+  $quantities = $_POST['cantidades'] ?? [];
+  $editRows = $_POST['edit_rows'] ?? [];
+  if (is_array($quantities)) {
+    foreach ($quantities as $idRaw => $qRaw) {
+      $id = (int)$idRaw; $qty = (float)$qRaw; if ($id <= 0) continue;
+      if ($isAdmin && is_array($editRows)) {
+        $cas = trim((string)($editRows['cas_nr'][$id] ?? ''));
+        $prov = trim((string)($editRows['proveedor'][$id] ?? ''));
+        $nom = trim((string)($editRows['nombre'][$id] ?? ''));
+        $owner = (int)($editRows['grupo_owner_id'][$id] ?? 0);
+        $loc = trim((string)($editRows['localizacion'][$id] ?? ''));
+        $acc = (($editRows['acceso'][$id] ?? 'publico') === 'privado') ? 'privado' : 'publico';
+        $gpriv = (int)($editRows['grupo_privado_id'][$id] ?? 0);
+        $gprivValue = ($acc === 'privado' && $gpriv > 0) ? $gpriv : null;
+        if ($cas !== '' && $prov !== '' && $nom !== '' && $owner > 0 && $loc !== '') {
+          $up = $mysqli->prepare('UPDATE chemicals SET cas_nr=?, proveedor=?, nombre=?, grupo_owner_id=?, localizacion=?, cantidad=?, acceso=?, grupo_privado_id=? WHERE id=?');
+          if ($up) { $up->bind_param('sssisdsii', $cas, $prov, $nom, $owner, $loc, $qty, $acc, $gprivValue, $id); $up->execute(); $up->close(); }
         }
+      } else {
+        $loc = trim((string)($editRows['localizacion'][$id] ?? ''));
+        if ($loc === '') { $loc = trim((string)($rows[$id]['localizacion'] ?? '')); }
+        $up = $mysqli->prepare("UPDATE chemicals SET cantidad=?, localizacion=? WHERE id=? AND grupo_owner_id=? AND (acceso='publico' OR (acceso='privado' AND grupo_privado_id=?))");
+        if ($up) { $up->bind_param('dsiii', $qty, $loc, $id, $userGroupId, $userGroupId); $up->execute(); $up->close(); }
+      }
     }
+  }
+  if ($isAdmin && isset($_POST['new_rows']) && is_array($_POST['new_rows'])) {
+    $nr = $_POST['new_rows'];
+    $total = max(
+      is_array($nr['cas_nr'] ?? null) ? count($nr['cas_nr']) : 0,
+      is_array($nr['proveedor'] ?? null) ? count($nr['proveedor']) : 0,
+      is_array($nr['nombre'] ?? null) ? count($nr['nombre']) : 0,
+      is_array($nr['grupo_owner_id'] ?? null) ? count($nr['grupo_owner_id']) : 0,
+      is_array($nr['localizacion'] ?? null) ? count($nr['localizacion']) : 0
+    );
+    for ($i = 0; $i < $total; $i++) {
+      $cas = trim((string)($nr['cas_nr'][$i] ?? '')); $prov = trim((string)($nr['proveedor'][$i] ?? '')); $nom = trim((string)($nr['nombre'][$i] ?? ''));
+      $owner = (int)($nr['grupo_owner_id'][$i] ?? 0); $loc = trim((string)($nr['localizacion'][$i] ?? '')); $cant = (float)($nr['cantidad'][$i] ?? 0);
+      $acc = (($nr['acceso'][$i] ?? 'publico') === 'privado') ? 'privado' : 'publico'; $gp = (int)($nr['grupo_privado_id'][$i] ?? 0);
+      $gpv = ($acc === 'privado' && $gp > 0) ? $gp : null;
+      if ($cas === '' || $prov === '' || $nom === '' || $owner <= 0 || $loc === '') continue;
+      $in = $mysqli->prepare('INSERT INTO chemicals (cas_nr, proveedor, nombre, grupo_owner_id, localizacion, cantidad, acceso, grupo_privado_id) VALUES (?,?,?,?,?,?,?,?)');
+      if ($in) { $in->bind_param('sssisdsi', $cas, $prov, $nom, $owner, $loc, $cant, $acc, $gpv); $in->execute(); $in->close(); }
+    }
+  }
+  // PRG: evita aviso de reenvio de formulario en el navegador
+  $redirectTo = 'quimicos.php';
+  $parts = [];
+  if (isset($_GET['q']) && trim((string)$_GET['q']) !== '') {
+    $parts[] = 'q=' . rawurlencode(trim((string)$_GET['q']));
+  }
+  if (isset($_GET['lang']) && in_array($_GET['lang'], ['es','en'], true)) {
+    $parts[] = 'lang=' . $_GET['lang'];
+  }
+  if ($parts) {
+    $redirectTo .= '?' . implode('&', $parts);
+  }
+  header('Location: ' . $redirectTo);
+  exit;
 }
-
 $q = trim((string)($_GET['q'] ?? ''));
+$shouldQuery = strlen($q) >= 3;
 $where = [];
-$shouldQuery = $isAdmin || strlen($q) >= 3;
-if (!$isAdmin && $hasPrivateId) { $where[] = "(c.acceso='publico' OR c.grupo_privado_id=" . (int)$userGroupId . ")"; }
-if (!$isAdmin && !$hasPrivateId) { $where[] = "(c.acceso='publico' OR c.grupo_privado='" . $mysqli->real_escape_string((string)($user['group_name'] ?? $user['grupo'] ?? '')) . "')"; }
-if (!$isAdmin && strlen($q) >= 3) { $where[] = "c.nombre LIKE '%" . $mysqli->real_escape_string($q) . "%'"; }
-if ($hasOwnerId) {
-    $sql = "SELECT c.*, go.name AS grupo_owner, " .
-        ($hasPrivateId ? "gp.name AS grupo_privado " : "NULL AS grupo_privado ") .
-        "FROM chemicals c
-        LEFT JOIN groups go ON go.id = c.grupo_owner_id " .
-        ($hasPrivateId ? "LEFT JOIN groups gp ON gp.id = c.grupo_privado_id " : "");
-} else {
-    $sql = "SELECT c.*, c.grupo_owner AS grupo_owner, c.grupo_privado AS grupo_privado FROM chemicals c";
-}
-if ($where) { $sql .= ' WHERE ' . implode(' AND ', $where); }
+if (!$isAdmin) { $where[] = "(c.acceso='publico' OR (c.acceso='privado' AND (c.grupo_privado_id=" . (int)$userGroupId . " OR c.grupo_owner_id=" . (int)$userGroupId . ')))'; }
+if (strlen($q) >= 3) { $where[] = "c.nombre LIKE '%" . $mysqli->real_escape_string($q) . "%'"; }
+$sql = "SELECT c.*, go.name AS grupo_owner, gp.name AS grupo_privado FROM chemicals c LEFT JOIN groups go ON go.id=c.grupo_owner_id LEFT JOIN groups gp ON gp.id=c.grupo_privado_id";
+if ($where) $sql .= ' WHERE ' . implode(' AND ', $where);
 $sql .= ' ORDER BY c.nombre ASC LIMIT 300';
-$rows = [];
-if ($shouldQuery) {
-    $r = $mysqli->query($sql);
-    $sqlError = $r ? '' : $mysqli->error;
-    while ($r && ($row = $r->fetch_assoc())) { $rows[] = $row; }
-} else {
-    $sqlError = '';
-}
+$rows=[]; if ($shouldQuery) { $r=$mysqli->query($sql); while($r&&($row=$r->fetch_assoc())) $rows[]=$row; }
 ?>
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Químicos</title><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script></head>
-<body class="bg-background-light min-h-screen text-slate-900">
-<div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
-<div class="layout-container flex h-full grow flex-col">
-<header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 bg-white px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
-<div class="flex items-center gap-3 flex-wrap">
-<img alt="Logo" class="h-10 w-auto object-contain" src="/iubolab/imagenes/instituto-biorganica-agonzalez-original.png" />
-<h2 class="text-slate-900 text-lg font-bold leading-tight tracking-[-0.015em] border-l border-slate-300 pl-4">Control de Químicos</h2>
-</div>
-<div class="flex items-center gap-3 w-full md:w-auto justify-end">
-<a href="<?= htmlspecialchars($profileUrl) ?>" class="flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 px-4 border border-slate-400 text-slate-700 text-sm font-bold hover:bg-slate-100 transition-colors">Volver al perfil</a>
-<a href="/iubolab/logout" class="flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors" title="Cerrar sesión">
-<span class="material-symbols-outlined text-base">power_settings_new</span>
-</a>
-</div>
-</header>
-<main class="flex-1 pt-28 pb-10">
-<div class="max-w-7xl mx-auto p-4 md:p-8">
-<?php if (!empty($sqlError)): ?><div class="mt-3 p-3 rounded bg-red-100 text-red-800">Error SQL: <?= htmlspecialchars($sqlError) ?></div><?php endif; ?>
-<form method="get" class="mt-4 flex gap-2"><input name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Buscar por nombre (mínimo 3 caracteres)" class="flex-1 border rounded px-3 py-2"><button class="px-4 py-2 bg-slate-800 text-white rounded">Buscar</button></form>
-<div class="mt-5 overflow-auto bg-white rounded border"><table class="min-w-full text-sm"><thead class="bg-slate-200"><tr><th class="p-2">CAS-NR</th><th>Proveedor</th><th>Nombre</th><th>Grupo owner</th><th>Localización</th><th>Cantidad</th><th>Acceso</th><th>Grupo privado</th><th>Acción</th></tr></thead><tbody>
-<?php foreach($rows as $c): ?><tr class="border-t"><td class="p-2"><?= htmlspecialchars($c['cas_nr']) ?></td><td><?= htmlspecialchars($c['proveedor']) ?></td><td><?= htmlspecialchars($c['nombre']) ?></td><td><?= htmlspecialchars((string)$c['grupo_owner']) ?></td><td><?= htmlspecialchars($c['localizacion']) ?></td><td>
-<form method="post" class="flex items-center gap-2">
-<input type="hidden" name="action" value="save_qty">
-<input type="hidden" name="chemical_id" value="<?= (int)$c['id'] ?>">
-<input type="number" step="0.01" min="0" name="cantidad" value="<?= htmlspecialchars((string)$c['cantidad']) ?>" class="w-24 border rounded px-2 py-1">
-</td><td><?= htmlspecialchars($c['acceso']) ?></td><td><?= htmlspecialchars((string)$c['grupo_privado']) ?></td><td><button class="px-3 py-1 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700">Guardar cambios</button></form></td></tr><?php endforeach; ?>
-<?php if (!$isAdmin && strlen($q) > 0 && strlen($q) < 3): ?><tr><td colspan="8" class="p-4 text-center text-amber-700">Escribe al menos 3 caracteres para buscar.</td></tr><?php endif; ?>
-<?php if (!$isAdmin && strlen($q) === 0): ?><tr><td colspan="8" class="p-4 text-center text-slate-500">Usa el buscador (mínimo 3 caracteres) y pulsa Enter.</td></tr><?php endif; ?>
-<?php if (($isAdmin || strlen($q) >= 3) && count($rows) === 0): ?><tr><td colspan="8" class="p-4 text-center text-slate-500">No hay resultados.</td></tr><?php endif; ?>
-</tbody></table></div>
-</div>
-</main>
-</div>
-</div>
-</body></html>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Químicos</title><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png"><link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png"><link rel="icon" type="image/png" sizes="16x16" href="/iubolab/imagenes/icono_circulo.png"><link rel="apple-touch-icon" href="/iubolab/imagenes/icono_circulo.png"><link href="https://fonts.googleapis.com/css2?family=Argentum+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" /><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" /><script>tailwind.config={theme:{extend:{colors:{primary:'#5c068c','background-light':'#f8f6f6'},fontFamily:{display:['Argentum Sans','sans-serif']}}}};</script><style>body{font-family:'Argentum Sans',sans-serif;}</style></head>
+<body class="bg-background-light min-h-screen text-slate-900"><div class="relative flex min-h-screen w-full flex-col"><header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-slate-200 bg-white px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50"><div class="flex items-center gap-3"><img alt="Logo" class="h-10" src="/iubolab/imagenes/instituto-biorganica-agonzalez-original.png" /><h2 data-i18n="title" class="text-lg font-bold border-l border-slate-300 pl-4">Control de Químicos</h2></div><div class="flex items-center gap-3 w-full md:w-auto justify-end"><?php if($isUserRole): ?><div class="hidden md:flex items-center gap-2 text-sm font-medium"><span id="langEs" class="text-primary cursor-pointer border-b-2 border-primary pb-0.5">ES</span><span class="text-slate-400">|</span><span id="langEn" class="text-slate-400 hover:text-primary cursor-pointer transition-colors border-b-2 border-transparent hover:border-slate-400 pb-0.5">EN</span></div><?php endif; ?><a href="<?= htmlspecialchars($profileUrl) ?>" title="Volver al perfil" class="rounded-xl h-11 w-11 border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined">person</span></a><button form="chemicalsForm" data-i18n="save" class="hidden md:flex rounded-xl h-11 px-4 border border-primary text-primary text-sm font-bold items-center hover:bg-primary hover:text-white">Guardar cambios</button><a href="/iubolab/logout" class="rounded-xl h-11 w-11 border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined">power_settings_new</span></a></div><?php if($isUserRole): ?><div class="md:hidden w-full flex items-center justify-end gap-2 text-sm font-medium"><button type="button" id="langEsMobile" class="text-primary border-b-2 border-primary pb-0.5">ES</button><span class="text-slate-400">|</span><button type="button" id="langEnMobile" class="text-slate-400 border-b-2 border-transparent pb-0.5">EN</button></div><?php endif; ?></header><main class="pt-32 md:pt-28 pb-10"><div class="max-w-[1400px] mx-auto p-4 md:p-6"><section class="rounded-2xl border border-slate-200 bg-white p-3 md:p-4"><form method="get" class="flex gap-2 items-center"><input id="searchInput" name="q" value="<?= htmlspecialchars($q) ?>" placeholder="Buscar por nombre (mínimo 3 caracteres)" class="flex-1 rounded-lg border-slate-300 px-3 py-2"><button data-i18n="search" class="rounded-lg px-4 py-2 bg-primary text-white font-semibold">Buscar</button><?php if($isAdmin): ?><button type="button" id="addChemicalRowBtn" class="h-10 w-10 rounded-lg bg-primary text-white text-xl">+</button><?php endif; ?></form><form id="chemicalsForm" method="post" class="mt-4"><input type="hidden" name="action" value="save_all"><div class="md:hidden mb-3"><button data-i18n="save" class="w-full h-11 rounded-xl border border-primary text-primary text-sm font-bold">Guardar cambios</button></div><div class="rounded-xl border border-slate-200"><table class="w-full table-fixed text-sm"><thead class="bg-slate-100"><tr><th class="px-3 py-3 text-center">CAS-NR</th><th data-i18n="supplier" class="px-3 py-3 text-center">Proveedor</th><th data-i18n="name" class="px-3 py-3 text-left">Nombre</th><th data-i18n="owner" class="px-3 py-3 text-center">Grupo propietario</th><th data-i18n="location" class="px-3 py-3 text-center">Localización</th><th data-i18n="amount" class="px-3 py-3 text-center">Cantidad</th><th data-i18n="access" class="px-3 py-3 text-center">Acceso</th><th data-i18n="privateGroup" class="px-3 py-3 text-center">Grupo privado</th></tr></thead><tbody>
+<?php foreach($rows as $c): $canEditOwn = $isAdmin || ((int)$c['grupo_owner_id'] === (int)$userGroupId); ?><tr class="border-t border-slate-200"><td class="px-3 py-3 text-center break-words"><?php if($isAdmin): ?><input name="edit_rows[cas_nr][<?= (int)$c['id'] ?>]" value="<?= htmlspecialchars($c['cas_nr']) ?>" class="w-full rounded border-slate-300 px-2 py-1 text-center"><?php else: ?><?= htmlspecialchars($c['cas_nr']) ?><?php endif; ?></td><td class="px-3 py-3 text-center break-words"><?php if($isAdmin): ?><input name="edit_rows[proveedor][<?= (int)$c['id'] ?>]" value="<?= htmlspecialchars($c['proveedor']) ?>" class="w-full rounded border-slate-300 px-2 py-1 text-center"><?php else: ?><?= htmlspecialchars($c['proveedor']) ?><?php endif; ?></td><td class="px-3 py-3 break-words"><?php if($isAdmin): ?><input name="edit_rows[nombre][<?= (int)$c['id'] ?>]" value="<?= htmlspecialchars($c['nombre']) ?>" class="w-full rounded border-slate-300 px-2 py-1"><?php else: ?><?= htmlspecialchars($c['nombre']) ?><?php endif; ?></td><td class="px-3 py-3 text-center"><?php if($isAdmin): ?><select name="edit_rows[grupo_owner_id][<?= (int)$c['id'] ?>]" class="w-full rounded border-slate-300 px-2 py-1"><?php foreach($groups as $g): ?><option value="<?= (int)$g['id'] ?>"<?= ((int)$c['grupo_owner_id']===(int)$g['id'])?' selected':'' ?>><?= htmlspecialchars($g['name']) ?></option><?php endforeach; ?></select><?php else: ?><?= htmlspecialchars((string)$c['grupo_owner']) ?><?php endif; ?></td><td class="px-3 py-3 text-center break-words"><?php if($isAdmin || $canEditOwn): ?><input name="edit_rows[localizacion][<?= (int)$c['id'] ?>]" value="<?= htmlspecialchars($c['localizacion']) ?>" class="w-full rounded border-slate-300 px-2 py-1 text-center"><?php else: ?><span class="text-slate-500"><?= htmlspecialchars($c['localizacion']) ?></span><?php endif; ?></td><td class="px-3 py-3 text-center"><input name="cantidades[<?= (int)$c['id'] ?>]" value="<?= htmlspecialchars((string)$c['cantidad']) ?>" type="number" step="0.01" min="0" class="w-full rounded border-slate-300 px-2 py-1 text-center<?= (!$isAdmin && !$canEditOwn) ? ' bg-slate-100 text-slate-500' : '' ?>" <?= (!$isAdmin && !$canEditOwn) ? 'readonly' : '' ?>></td><td class="px-3 py-3 text-center"><?php if($isAdmin): ?><select name="edit_rows[acceso][<?= (int)$c['id'] ?>]" class="w-full rounded border-slate-300 px-2 py-1"><option value="publico"<?= $c['acceso']==='publico'?' selected':'' ?>>publico</option><option value="privado"<?= $c['acceso']==='privado'?' selected':'' ?>>privado</option></select><?php else: ?><?= htmlspecialchars($c['acceso']) ?><?php endif; ?></td><td class="px-3 py-3 text-center"><?php if($isAdmin): ?><select name="edit_rows[grupo_privado_id][<?= (int)$c['id'] ?>]" class="w-full rounded border-slate-300 px-2 py-1"><option value="0">-</option><?php foreach($groups as $g): ?><option value="<?= (int)$g['id'] ?>"<?= ((int)($c['grupo_privado_id']??0)===(int)$g['id'])?' selected':'' ?>><?= htmlspecialchars($g['name']) ?></option><?php endforeach; ?></select><?php else: ?><?= htmlspecialchars((string)$c['grupo_privado']) ?><?php endif; ?></td></tr><?php endforeach; ?>
+<?php if(strlen($q)===0): ?><tr><td colspan="8" class="p-4 text-center text-slate-500">Usa el buscador (mínimo 3 caracteres) y pulsa Enter.</td></tr><?php endif; ?>
+<?php if(strlen($q)>0 && strlen($q)<3): ?><tr><td colspan="8" class="p-4 text-center text-amber-700">Escribe al menos 3 caracteres para buscar.</td></tr><?php endif; ?>
+<?php if(strlen($q)>=3 && count($rows)===0): ?><tr><td colspan="8" class="p-4 text-center text-slate-500">No hay resultados.</td></tr><?php endif; ?>
+</tbody></table></div></form></section></div></main></div>
+<?php if($isAdmin): ?><script>const groupOptions=`<?php foreach($groups as $g): ?><option value="<?= (int)$g['id'] ?>"><?= htmlspecialchars($g['name'],ENT_QUOTES,'UTF-8') ?></option><?php endforeach; ?>`;document.getElementById('addChemicalRowBtn')?.addEventListener('click',()=>{const tb=document.querySelector('#chemicalsForm tbody');if(!tb)return;const tr=document.createElement('tr');tr.className='border-t border-slate-200 bg-amber-50';tr.innerHTML='<td class="px-4 py-3 text-center"><input name="new_rows[cas_nr][]" class="w-32 rounded border-slate-300 px-2 py-1 text-center" required></td><td class="px-4 py-3 text-center"><input name="new_rows[proveedor][]" class="w-36 rounded border-slate-300 px-2 py-1 text-center" required></td><td class="px-4 py-3"><input name="new_rows[nombre][]" class="w-full rounded border-slate-300 px-2 py-1" required></td><td class="px-4 py-3 text-center"><select name="new_rows[grupo_owner_id][]" class="rounded border-slate-300 px-2 py-1" required>'+groupOptions+'</select></td><td class="px-4 py-3 text-center"><input name="new_rows[localizacion][]" class="w-36 rounded border-slate-300 px-2 py-1 text-center" required></td><td class="px-4 py-3 text-center"><input name="new_rows[cantidad][]" value="0" type="number" step="0.01" min="0" class="w-24 rounded border-slate-300 px-2 py-1 text-center"></td><td class="px-4 py-3 text-center"><select name="new_rows[acceso][]" class="rounded border-slate-300 px-2 py-1"><option value="publico">publico</option><option value="privado">privado</option></select></td><td class="px-4 py-3 text-center"><select name="new_rows[grupo_privado_id][]" class="rounded border-slate-300 px-2 py-1"><option value="0">-</option>'+groupOptions+'</select></td>';tb.prepend(tr);});</script><?php endif; ?>
+<script>
+const i18n={es:{title:'Control de Químicos',back:'Volver al perfil',save:'Guardar cambios',search:'Buscar',supplier:'Proveedor',name:'Nombre',owner:'Grupo propietario',location:'Localización',amount:'Cantidad',access:'Acceso',privateGroup:'Grupo privado',searchPh:'Buscar por nombre (mínimo 3 caracteres)'},en:{title:'Chemicals Control',back:'Back to profile',save:'Save changes',search:'Search',supplier:'Supplier',name:'Name',owner:'Owner group',location:'Location',amount:'Amount',access:'Access',privateGroup:'Private group',searchPh:'Search by name (minimum 3 characters)'}};
+function paintLang(l){const es=[document.getElementById('langEs'),document.getElementById('langEsMobile')];const en=[document.getElementById('langEn'),document.getElementById('langEnMobile')];if(l==='es'){es.forEach(b=>b&&(b.className='text-primary cursor-pointer border-b-2 border-primary pb-0.5'));en.forEach(b=>b&&(b.className='text-slate-400 hover:text-primary cursor-pointer transition-colors border-b-2 border-transparent hover:border-slate-400 pb-0.5'));}else{en.forEach(b=>b&&(b.className='text-primary cursor-pointer border-b-2 border-primary pb-0.5'));es.forEach(b=>b&&(b.className='text-slate-400 hover:text-primary cursor-pointer transition-colors border-b-2 border-transparent hover:border-slate-400 pb-0.5'));}}
+function applyLang(l){localStorage.setItem('chem_lang',l);document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(i18n[l][k])el.textContent=i18n[l][k];});const s=document.getElementById('searchInput');if(s)s.placeholder=i18n[l].searchPh;paintLang(l);}
+document.getElementById('langEs')?.addEventListener('click',()=>applyLang('es'));document.getElementById('langEn')?.addEventListener('click',()=>applyLang('en'));document.getElementById('langEsMobile')?.addEventListener('click',()=>applyLang('es'));document.getElementById('langEnMobile')?.addEventListener('click',()=>applyLang('en'));applyLang(localStorage.getItem('chem_lang')||'es');
+</script></body></html>
