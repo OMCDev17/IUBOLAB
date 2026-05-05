@@ -4,12 +4,13 @@ header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
 header('Expires: 0');
 
-$config = require __DIR__ . '/auth_config.php';
+$config = require __DIR__ . '/config.php';
+require_once __DIR__ . '/stay_lifecycle.php';
 
 function send500($msg)
 {
     http_response_code(500);
-    echo json_encode(['error' => $msg], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['error' => $msg]);
     exit;
 }
 
@@ -22,6 +23,7 @@ if ($usingMysqli) {
     }
     $db->set_charset($config['charset']);
     $db->query("SET NAMES {$config['charset']}");
+    expireStaysAndPendingRequests($db);
 } elseif (extension_loaded('pdo_mysql')) {
     try {
         $dsn = "mysql:host={$config['host']};dbname={$config['db']};charset={$config['charset']}";
@@ -42,21 +44,12 @@ if (!is_array($input) || empty($input['username']) || !array_key_exists('passwor
 }
 if (!is_array($input) || empty($input['username']) || !array_key_exists('password', $input)) {
     http_response_code(400);
-    echo json_encode(['error' => 'Faltan credenciales'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['error' => 'Faltan credenciales']);
     exit;
 }
 
-$username = trim((string)$input['username']);
-$password = (string)$input['password'];
-
-// Fallback session path inside project if default path is not writable.
-$localSessionPath = __DIR__ . '/../storage/sessions';
-if (!is_dir($localSessionPath)) {
-    @mkdir($localSessionPath, 0775, true);
-}
-if (is_dir($localSessionPath) && is_writable($localSessionPath)) {
-    session_save_path($localSessionPath);
-}
+$username = trim($input['username']);
+$password = $input['password'];
 
 if (session_status() === PHP_SESSION_NONE) {
     session_name('GESTIUBOSESSID');
@@ -65,7 +58,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $user = null;
 if ($usingMysqli) {
-    $sql = 'SELECT e.id, e.nombre, e.apellidos, e.email, e.username, e.dni_pasaporte, e.fecha_nacimiento, e.rol, e.password,
+$sql = 'SELECT e.id, e.nombre, e.apellidos, e.email, e.username, e.dni_pasaporte, e.fecha_nacimiento, e.rol, e.password,
                    s.group_id, g.name AS group_name, s.horario, s.fecha_inicio, s.fecha_fin, s.motivo, s.institucion, s.pais, e.foto_url,
                    e.phone_prefix, e.phone_number
             FROM employees e
@@ -87,7 +80,7 @@ if ($usingMysqli) {
         $user = $result->fetch_assoc();
     }
     $stmt->close();
-} else {
+} else { // PDO
     $stmt = $db->prepare('SELECT e.id, e.nombre, e.apellidos, e.email, e.username, e.dni_pasaporte, e.fecha_nacimiento, e.rol, e.password,
                                  s.group_id, g.name AS group_name, s.horario, s.fecha_inicio, s.fecha_fin, s.motivo, s.institucion, s.pais, e.foto_url,
                                  e.phone_prefix, e.phone_number
@@ -108,7 +101,7 @@ if ($usingMysqli) {
 
 if (!$user) {
     http_response_code(401);
-    echo json_encode(['error' => 'Usuario o contraseña incorrectos'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['error' => 'Usuario o contraseña incorrectos']);
     exit;
 }
 
@@ -117,7 +110,7 @@ $plainMatch = hash_equals((string)$stored, (string)$password);
 $hashMatch = password_get_info($stored)['algo'] !== 0 && password_verify($password, $stored);
 if (!$plainMatch && !$hashMatch) {
     http_response_code(401);
-    echo json_encode(['error' => 'Usuario o contraseña incorrectos'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['error' => 'Usuario o contraseña incorrectos']);
     exit;
 }
 unset($user['password']);
@@ -126,18 +119,19 @@ $_SESSION = [];
 session_regenerate_id(true);
 $_SESSION['user'] = $user;
 
+// Determine redirect according to stored role
 $role = strtolower($user['rol'] ?? '');
-$redirect = 'empleado.php';
+$redirect = 'usuario';
 switch ($role) {
     case 'admin':
-        $redirect = 'admin.php';
+        $redirect = 'admin';
         break;
     case 'supervisor':
     case 'coordinador':
-        $redirect = 'supervisor.php';
+        $redirect = 'coordinador';
         break;
     case 'seguridad':
-        $redirect = 'seguridad.php';
+        $redirect = 'seguridad';
         break;
 }
 
@@ -145,4 +139,8 @@ echo json_encode([
     'success' => true,
     'user' => $user,
     'redirect' => $redirect,
-], JSON_UNESCAPED_UNICODE);
+]);
+
+
+
+

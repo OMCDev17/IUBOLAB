@@ -8,7 +8,7 @@ return [
     'user' => 'root',
     // XAMPP por defecto usa root sin contraseña; ajusta si tu MySQL usa otra.
     'pass' => '',
-    'db'   => 'iubolab_db',
+    'db'   => 'mayhem_db',
     'charset' => 'utf8mb4',
     'smtp' => [
         'host' => 'smtp.gmail.com',

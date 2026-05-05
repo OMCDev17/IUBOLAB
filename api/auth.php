@@ -31,15 +31,6 @@ ini_set('session.use_strict_mode', '1');
 ini_set('session.use_only_cookies', '1');
 ini_set('session.use_trans_sid', '0');
 
-// Fallback session path inside project if default path is not writable.
-$localSessionPath = __DIR__ . '/../storage/sessions';
-if (!is_dir($localSessionPath)) {
-    @mkdir($localSessionPath, 0775, true);
-}
-if (is_dir($localSessionPath) && is_writable($localSessionPath)) {
-    session_save_path($localSessionPath);
-}
-
 if (session_status() === PHP_SESSION_NONE) {
     session_name('GESTIUBOSESSID');
     session_set_cookie_params([
@@ -58,6 +49,19 @@ function getSessionUser(): ?array
     return isset($_SESSION['user']) && is_array($_SESSION['user']) ? $_SESSION['user'] : null;
 }
 
+function loginRoute(): string
+{
+    $script = $_SERVER['SCRIPT_NAME'] ?? '/GESTIUBO/index.php';
+    $base = str_contains($script, '/api/')
+        ? dirname(dirname($script))
+        : dirname($script);
+    $base = rtrim(str_replace('\\', '/', $base), '/');
+    if ($base === '') {
+        $base = '/GESTIUBO';
+    }
+    return $base . '/acceso';
+}
+
 function requireLogin(bool $isApi = false): void
 {
     if (!getSessionUser()) {
@@ -68,7 +72,7 @@ function requireLogin(bool $isApi = false): void
             exit;
         }
 
-        header('Location: ../Loggin.php');
+        header('Location: ' . loginRoute());
         exit;
     }
 }
@@ -100,7 +104,9 @@ function requireRole($roles, bool $isApi = false): void
             exit;
         }
 
-        header('Location: ../Loggin.php');
+        header('Location: ' . loginRoute());
         exit;
     }
 }
+
+
