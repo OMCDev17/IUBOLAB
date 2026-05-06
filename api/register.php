@@ -385,11 +385,15 @@ try {
 $firstName = trim((string) ($data['nombre'] ?? ''));
 $userName = trim((string) ($data['username'] ?? ''));
 $groupName = trim((string) ($data['grupo'] ?? ''));
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-$basePath = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
-$loginUrl = "{$scheme}://{$host}{$basePath}/acceso";
-$approveUrl = "{$scheme}://{$host}{$basePath}/aprobar-solicitud?token={$approvalToken}";
+$baseUrl = rtrim((string)($config['app']['base_url'] ?? ''), '/');
+if ($baseUrl === '') {
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $basePath = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
+    $baseUrl = "{$scheme}://{$host}{$basePath}";
+}
+$loginUrl = "{$baseUrl}/acceso";
+$approveUrl = "{$baseUrl}/aprobar-solicitud?token={$approvalToken}";
 
 $approverQuery = $mysqli->prepare("
     SELECT DISTINCT e.id, e.nombre, e.apellidos, e.email

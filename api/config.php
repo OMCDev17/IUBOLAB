@@ -10,6 +10,10 @@ return [
     'pass' => '',
     'db'   => 'mayhem_db',
     'charset' => 'utf8mb4',
+    'app' => [
+        // URL publica base de la app (sin slash final), ej: http://localhost/IUBOLAB
+        'base_url' => 'http://localhost/IUBOLAB',
+    ],
     'smtp' => [
         'host' => 'smtp.gmail.com',
         'port' => 587,

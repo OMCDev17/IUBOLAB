@@ -256,10 +256,14 @@ if ($method === 'POST') {
 
             $mysqli->commit();
             if ($action === 'approve') {
-                $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-                $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                $basePath = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
-                $loginUrl = "{$scheme}://{$host}{$basePath}/acceso";
+                $baseUrl = rtrim((string)($config['app']['base_url'] ?? ''), '/');
+                if ($baseUrl === '') {
+                    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                    $basePath = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
+                    $baseUrl = "{$scheme}://{$host}{$basePath}";
+                }
+                $loginUrl = "{$baseUrl}/acceso";
 
                 $stayData = [
                     'group_name' => $request['group_name'] ?? '',

@@ -307,11 +307,14 @@ try {
     }
 
     if (function_exists('sendGroupApprovalRequestEmail')) {
-        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $basePath = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
-        $approveUrl = "{$scheme}://{$host}{$basePath}/aprobar-solicitud?token={$approvalToken}";
-
+        $baseUrl = rtrim((string)($config['app']['base_url'] ?? ''), '/');
+        if ($baseUrl === '') {
+            $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+            $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            $basePath = rtrim(dirname(dirname($_SERVER['PHP_SELF'])), '/\\');
+            $baseUrl = "{$scheme}://{$host}{$basePath}";
+        }
+        $approveUrl = "{$baseUrl}/aprobar-solicitud?token={$approvalToken}";
         $approvers = [];
         $approverQuery = $mysqli->prepare("
             SELECT DISTINCT e.id, e.nombre, e.apellidos, e.email

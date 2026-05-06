@@ -12,9 +12,14 @@ function getInstituteLogoPath(): string {
 }
 
 function getInstituteLogoFallbackUrl(): string {
-    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    return "{$scheme}://{$host}/iubolab/imagenes/instituto-biorganica-agonzalez-original.png";
+    $config = require __DIR__ . '/config.php';
+    $baseUrl = rtrim((string)($config['app']['base_url'] ?? ''), '/');
+    if ($baseUrl === '') {
+        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $baseUrl = "{$scheme}://{$host}";
+    }
+    return "{$baseUrl}/imagenes/instituto-biorganica-agonzalez-original.png";
 }
 
 function attachInstituteLogo(PHPMailer $mailer): string {
