@@ -57,7 +57,7 @@
 </div>
 <!-- Main Message -->
 <h2 class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl md:text-3xl font-bold leading-tight text-center mb-2">
-                            Correo enviado con Ã©xito
+                            Correo enviado con éxito
                         </h2>
 <p class="text-slate-500 dark:text-slate-400 text-lg font-medium leading-normal text-center">
                             Email sent successfully
@@ -66,7 +66,7 @@
 <!-- Informational Text -->
 <div class="text-center mb-8">
 <p class="text-slate-500 dark:text-slate-400 text-sm">
-                            Hemos enviado un correo de recuperaciÃ³n a la direcciÃ³n indicada.
+                            Hemos enviado un correo de recuperación a la dirección indicada.
                         </p>
 <p class="text-slate-400 dark:text-slate-500 text-xs mt-1 italic">
                             We have sent a recovery email to the specified address.
@@ -75,13 +75,13 @@
                             Si no lo ves en unos minutos, revisa tu carpeta de spam o correo no deseado.
                         </p>
 <p class="text-slate-500 dark:text-slate-400 text-sm mt-4">
-                            SerÃ¡s redirigido al inicio de sesiÃ³n en <span id="countdown" class="font-bold text-primary">8</span> segundos.
+                            Serás redirigido al inicio de sesión en <span id="countdown" class="font-bold text-primary">8</span> segundos.
                         </p>
 </div>
 <!-- Actions -->
 <div class="flex flex-col gap-3">
 <a href="acceso" class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity">
-<span class="truncate">Volver a iniciar sesiÃ³n / Back to Login</span>
+<span class="truncate">Volver a iniciar sesión / Back to Login</span>
 </a>
 <div class="flex justify-center mt-4">
 <div class="flex items-center gap-2 text-slate-400">
@@ -95,7 +95,7 @@
 <!-- Footer / Copyright -->
 <footer class="py-6 px-10 border-t border-primary/5 text-center">
 <p class="text-slate-400 text-xs font-medium uppercase tracking-widest">
-                    Â© 2026 GestIUBO. All Rights Reserved.
+                    © 2026 GestIUBO. All Rights Reserved.
                 </p>
 </footer>
 </div>

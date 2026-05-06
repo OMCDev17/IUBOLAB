@@ -1,6 +1,6 @@
 <?php
 // ============================================================================
-// Proceso de RecuperaciÃ³n de ContraseÃ±a - Nuevo Sistema con CÃ³digo de 4 DÃ­gitos
+// Proceso de Recuperación de Contraseña - Nuevo Sistema con Código de 4 Dígitos
 // ============================================================================
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -39,7 +39,7 @@ if (!$user) {
 $userId = intval($user['id']);
 $userName = trim($user['nombre'] ?? '');
 
-// Crear tabla de restablecimiento si no existe (ahora con campo de cÃ³digo)
+// Crear tabla de restablecimiento si no existe (ahora con campo de código)
 $createTableSql = "CREATE TABLE IF NOT EXISTS password_resets (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -53,43 +53,43 @@ $createTableSql = "CREATE TABLE IF NOT EXISTS password_resets (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 $mysqli->query($createTableSql);
 
-// Generar cÃ³digo de 4 dÃ­gitos aleatorio
+// Generar código de 4 dígitos aleatorio
 $code = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
 $expiresAt = (new DateTime('+15 minutes'))->format('Y-m-d H:i:s');
 
-// Eliminar cÃ³digos anteriores del usuario
+// Eliminar códigos anteriores del usuario
 $deleteSql = 'DELETE FROM password_resets WHERE user_id = ?';
 $stmt = $mysqli->prepare($deleteSql);
 $stmt->bind_param('i', $userId);
 $stmt->execute();
 $stmt->close();
 
-// Insertar nuevo registro con el cÃ³digo
+// Insertar nuevo registro con el código
 $insertSql = 'INSERT INTO password_resets (user_id, code, expires_at) VALUES (?, ?, ?)';
 $stmt = $mysqli->prepare($insertSql);
 $stmt->bind_param('iss', $userId, $code, $expiresAt);
 $stmt->execute();
 $stmt->close();
 
-// Enviar correo con el cÃ³digo
+// Enviar correo con el código
 require_once __DIR__ . '/api/email_templates.php';
 
 $mailSent = sendPasswordResetEmail($email, $userName, $code, $config);
 
 $debugMessage = "";
 if ($mailSent) {
-    $debugMessage = "<span class='text-emerald-600 dark:text-emerald-400'><strong>âœ“ Correo enviado a:</strong> " . htmlspecialchars($email) . "</span>";
+    $debugMessage = "<span class='text-emerald-600 dark:text-emerald-400'><strong>✓ Correo enviado a:</strong> " . htmlspecialchars($email) . "</span>";
 } else {
-    $debugMessage = "<span class='text-red-600 dark:text-red-400'><strong>Error:</strong> No se pudo enviar el correo. Intenta de nuevo mÃ¡s tarde.</span>";
+    $debugMessage = "<span class='text-red-600 dark:text-red-400'><strong>Error:</strong> No se pudo enviar el correo. Intenta de nuevo más tarde.</span>";
 }
 
-// Mostrar confirmaciÃ³n y pÃ¡gina para validar cÃ³digo
+// Mostrar confirmación y página para validar código
 ?><!DOCTYPE html>
 <html class="light" lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CÃ³digo enviado - Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez</title>
+<title>Código enviado - Instituto de Bio-Orgánica Antonio González</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png">
 <link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png">
@@ -132,7 +132,7 @@ if ($mailSent) {
                     <div class="w-full aspect-video bg-[#f0fdf4] dark:bg-[#064e3b] rounded-xl mb-6 flex items-center justify-center border border-emerald-200 dark:border-emerald-900">
                         <span class="material-symbols-outlined text-primary text-7xl select-none" style="font-variation-settings: 'FILL' 1, 'wght' 700;">check_circle</span>
                     </div>
-                    <h2 class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl md:text-3xl font-bold text-center mb-2">Â¡Correo enviado! / Email sent</h2>
+                    <h2 class="text-slate-900 dark:text-slate-100 tracking-tight text-2xl md:text-3xl font-bold text-center mb-2">¡Correo enviado! / Email sent</h2>
                     <p class="text-slate-500 dark:text-slate-400 text-sm text-center"><?php echo htmlspecialchars($email); ?></p>
                 </div>
                 
@@ -144,28 +144,28 @@ if ($mailSent) {
                     <div class="flex gap-3">
                         <span class="text-blue-600 dark:text-blue-400 flex-shrink-0 font-bold text-xl">i</span>
                         <div class="text-sm text-blue-800 dark:text-blue-300">
-                            <p class="font-semibold mb-2">Hemos enviado un cÃ³digo de 4 dÃ­gitos a tu correo</p>
-                            <p class="mb-3">El cÃ³digo expira en 15 minutos. UtilÃ­zalo para restablecer tu contraseÃ±a.</p>
+                            <p class="font-semibold mb-2">Hemos enviado un código de 4 dígitos a tu correo</p>
+                            <p class="mb-3">El código expira en 15 minutos. Utilízalo para restablecer tu contraseña.</p>
                             <a href="restablecer-password" class="inline-flex items-center gap-2 text-blue-700 dark:text-blue-300 hover:underline font-semibold">
-                                Ingresar cÃ³digo de verificaciÃ³n â†’
+                                Ingresar código de verificación →
                             </a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="mb-4 p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
-                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Â¿No recibiste el correo?</p>
+                    <p class="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">¿No recibiste el correo?</p>
                     <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1">
-                        <li>â€¢ Revisa tu carpeta de spam o junk mail</li>
-                        <li>â€¢ Verifica que hayas introducido el correo correcto</li>
-                        <li>â€¢ Intenta nuevamente en 5 minutos</li>
+                        <li>* Revisa tu carpeta de spam o junk mail</li>
+                        <li>* Verifica que hayas introducido el correo correcto</li>
+                        <li>* Intenta nuevamente en 5 minutos</li>
                     </ul>
                 </div>
                 
                 <div class="flex gap-3">
                     <a href="restablecer-password" class="flex-grow text-center h-12 rounded-xl bg-primary text-white font-bold hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
-                        <span class="text-white font-bold">âœ”</span>
-                        Validar CÃ³digo / Verify code
+                        <span class="text-white font-bold">✔</span>
+                        Validar Código / Verify code
                     </a>
                     <a href="acceso" class="flex-grow text-center h-12 rounded-xl border border-primary text-primary font-bold hover:bg-primary/5 transition flex items-center justify-center">
                         Volver / Back
@@ -174,7 +174,7 @@ if ($mailSent) {
             </div>
         </main>
         <footer class="py-6 px-10 border-t border-primary/5 text-center">
-            <p class="text-slate-400 text-xs font-medium uppercase tracking-widest">Â© 2026 Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez. Todos los derechos reservados.</p>
+            <p class="text-slate-400 text-xs font-medium uppercase tracking-widest">© 2026 Instituto de Bio-Orgánica Antonio González. Todos los derechos reservados.</p>
         </footer>
     </div>
 </div>

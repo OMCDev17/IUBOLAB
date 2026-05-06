@@ -79,7 +79,7 @@ if ($user) {
                         es: {
                             title: 'Recursos Humanos',
                             desc: 'Ingresa tus credenciales para acceder.',
-                            userLabel: 'Usuario o Correo ElectrÃƒÂ³nico',
+                            userLabel: 'Usuario o Correo Electrónico',
                             userPlaceholder: 'ej. usuario_123',
                             passLabel: 'Contraseña',
                             forgot: '¿Olvidaste tu contraseña?',
@@ -87,7 +87,7 @@ if ($user) {
                             signIn: 'Iniciar sesión',
                             noAccount: '¿No tienes una cuenta?',
                             createAccount: 'Crear Cuenta de Miembro',
-                            alertForgot: 'Se ha enviado un correo electrÃƒÂ³nico de recuperaciÃƒÂ³n a su direcciÃƒÂ³n registrada.',
+                            alertForgot: 'Se ha enviado un correo electrónico de recuperación a su dirección registrada.',
                             alertCreate: 'Solicitud de registro enviada al administrador.',
                             signingIn: 'Iniciando sesión...'
                         },
@@ -170,7 +170,7 @@ if ($user) {
             </div>
             <form id="loginForm" class="space-y-6 max-w-md mx-auto w-full" onsubmit="handleLogin(event)">
                 <div class="space-y-2">
-                    <label class="text-sm font-semibold text-slate-700 block" for="username">Usuario o Correo ElectrÃƒÂ³nico</label>
+                    <label class="text-sm font-semibold text-slate-700 block" for="username">Usuario o Correo Electronico</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
                         <input class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-lab-accent focus:border-transparent outline-none transition-all placeholder:text-slate-400" id="username" name="username" placeholder="ej. User_123" type="text" />
@@ -270,7 +270,7 @@ if ($user) {
     </script>
     <!-- Footer -->
     <footer class="text-center py-6 text-slate-500 text-sm">
-        Ã‚Â© 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
+        © 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
     </footer>
 </body>
 

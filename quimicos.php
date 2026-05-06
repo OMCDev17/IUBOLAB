@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require __DIR__ . '/api/auth.php';
 requireRole(['empleado','supervisor','coordinador','admin']);
 require_once __DIR__ . '/api/stay_lifecycle.php';

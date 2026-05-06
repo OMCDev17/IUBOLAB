@@ -1,31 +1,31 @@
 <?php
 // ============================================================================
-// PÃ¡gina de ValidaciÃ³n de CÃ³digo y Restablecimiento de Contraseña
+// Página de Validación de Código y Restablecimiento de Contraseña
 // ============================================================================
 
 session_start();
 
 $config = require __DIR__ . '/api/config.php';
-$step = isset($_GET['step']) ? $_GET['step'] : 1; // Paso 1: ingresa cÃ³digo, Paso 2: nueva contraseña
+$step = isset($_GET['step']) ? $_GET['step'] : 1; // Paso 1: ingresa código, Paso 2: nueva contraseña
 $validCode = false;
 $codeError = '';
 $resetCode = '';
 $resetId = 0;
 $userId = 0;
 
-// Si viene de POST, validar el cÃ³digo
+// Si viene de POST, validar el código
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
     $resetCode = trim($_POST['reset_code'] ?? '');
     
     if (empty($resetCode)) {
-        $codeError = 'El cÃ³digo es requerido';
+        $codeError = 'El código es requerido';
     } elseif (strlen($resetCode) !== 4 || !ctype_digit($resetCode)) {
-        $codeError = 'El cÃ³digo debe ser de 4 dÃ­gitos';
+        $codeError = 'El código debe ser de 4 dígitos';
     } else {
-        // Verificar el cÃ³digo en la base de datos
+        // Verificar el código en la base de datos
         $mysqli = new mysqli($config['host'], $config['user'], $config['pass'], $config['db']);
         if ($mysqli->connect_errno) {
-            $codeError = 'Error de conexiÃ³n. Intenta de nuevo.';
+            $codeError = 'Error de conexión. Intenta de nuevo.';
         } else {
             $mysqli->set_charset($config['charset']);
             $stmt = $mysqli->prepare('SELECT id, user_id FROM password_resets WHERE code = ? AND expires_at > NOW() LIMIT 1');
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
                 header('Location: restablecer-password?step=2');
                 exit;
             } else {
-                $codeError = 'El cÃ³digo es invÃ¡lido o ha expirado';
+                $codeError = 'El código es inválido o ha expirado';
             }
         }
     }
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $validCode ? 'Nueva Contraseña' : 'Validar CÃ³digo'; ?> - Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez</title>
+    <title><?php echo $validCode ? 'Nueva Contraseña' : 'Validar Código'; ?> - Instituto de Bio-Orgánica Antonio González</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png">
     <link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png">
@@ -123,10 +123,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
             </div>
             <div>
                 <h1 id="mainTitle" class="text-2xl font-bold">
-                    <?php echo $validCode ? 'Crear nueva contraseña' : 'Validar cÃ³digo'; ?>
+                    <?php echo $validCode ? 'Crear nueva contraseña' : 'Validar código'; ?>
                 </h1>
                 <p id="mainDesc" class="text-sm text-slate-500 dark:text-slate-400">
-                    <?php echo $validCode ? 'Establece una contraseña segura para Gestiubo.' : 'Ingresa el cÃ³digo de 4 dÃ­gitos enviado a tu correo.'; ?>
+                    <?php echo $validCode ? 'Establece una contraseña segura para Gestiubo.' : 'Ingresa el código de 4 dígitos enviado a tu correo.'; ?>
                 </p>
             </div>
         </div>
@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
                 
                 <div>
                     <label id="labelNewPassword" class="text-sm font-semibold text-slate-700 dark:text-slate-200">Nueva contraseña</label>
-                    <input id="newPwd" name="newPwd" type="password" class="mt-1 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-3 focus:ring-primary focus:border-primary" placeholder="MÃ­nimo 4 caracteres" required>
+                    <input id="newPwd" name="newPwd" type="password" class="mt-1 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-3 focus:ring-primary focus:border-primary" placeholder="Mínimo 4 caracteres" required>
                 </div>
                 
                 <div>
@@ -169,15 +169,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
 
             <div class="text-center pt-4 border-t border-slate-200 dark:border-slate-700">
                 <form method="GET" style="display:inline;">
-                    <button type="submit" name="step" value="1" class="text-sm text-primary hover:underline">â† Volver e ingresa otro cÃ³digo</button>
+                    <button type="submit" name="step" value="1" class="text-sm text-primary hover:underline">← Volver e ingresa otro código</button>
                 </form>
             </div>
 
         <?php else: ?>
-            <!-- Paso 1: Ingresar cÃ³digo -->
+            <!-- Paso 1: Ingresar código -->
             <form method="POST" class="space-y-4">
                 <div>
-                    <label id="labelCode" class="text-sm font-semibold text-slate-700 dark:text-slate-200">CÃ³digo de verificaciÃ³n</label>
+                    <label id="labelCode" class="text-sm font-semibold text-slate-700 dark:text-slate-200">Código de verificación</label>
                     <input id="inputCode" type="text" 
                            name="reset_code" 
                            class="mt-1 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-3 focus:ring-primary focus:border-primary text-center text-3xl tracking-widest font-mono" 
@@ -197,17 +197,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
 
                 <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 flex gap-2 text-sm text-blue-800 dark:text-blue-300">
                     <span class="material-symbols-outlined flex-shrink-0 text-base">info</span>
-                    <span>Ingresa el cÃ³digo de 4 dÃ­gitos que recibiste en tu correo electrÃ³nico.</span>
+                    <span>Ingresa el código de 4 dígitos que recibiste en tu correo electrónico.</span>
                 </div>
 
                 <button id="validateBtn" type="submit" class="w-full h-12 rounded-xl bg-primary text-white font-semibold hover:opacity-90 transition flex items-center justify-center gap-2">
-                    <span id="validateBtnText">Validar cÃ³digo</span>
+                    <span id="validateBtnText">Validar código</span>
                 </button>
             </form>
 
             <div class="text-center pt-4 border-t border-slate-200 dark:border-slate-700 text-sm">
-                <p id="noCodeText" class="text-slate-600 dark:text-slate-400 mb-2">¿No recibiste el cÃ³digo?</p>
-                <a id="newCodeText" href="recuperar" class="text-primary hover:underline">Solicitar un nuevo cÃ³digo â†’</a>
+                <p id="noCodeText" class="text-slate-600 dark:text-slate-400 mb-2">¿No recibiste el código?</p>
+                <a id="newCodeText" href="recuperar" class="text-primary hover:underline">Solicitar un nuevo código →</a>
             </div>
         <?php endif; ?>
 
@@ -263,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
 
             try {
                 const fd = new FormData(form);
-                // Debug: mostrar datos que se envÃ­an
+                // Debug: mostrar datos que se envían
                 console.log('Datos enviados:');
                 for (let pair of fd.entries()) {
                     console.log(pair[0] + ': ' + pair[1]);
@@ -292,11 +292,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
         });
     }
     <?php else: ?>
-    // Auto-format input para cÃ³digo de 4 dÃ­gitos
+    // Auto-format input para código de 4 dígitos
     const codeInput = document.querySelector('input[name="reset_code"]');
     if (codeInput) {
         codeInput.addEventListener('input', function() {
-            // Solo permitir nÃºmeros
+            // Solo permitir números
             this.value = this.value.replace(/[^0-9]/g, '').slice(0, 4);
         });
     }
@@ -305,17 +305,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
     const translations = {
         es: {
             mainTitleValid: 'Crear nueva contraseña',
-            mainTitleInvalid: 'Validar cÃ³digo',
+            mainTitleInvalid: 'Validar código',
             mainDescValid: 'Establece una contraseña segura para Gestiubo.',
-            mainDescInvalid: 'Ingresa el cÃ³digo de 4 dÃ­gitos enviado a tu correo.',
+            mainDescInvalid: 'Ingresa el código de 4 dígitos enviado a tu correo.',
             labelNewPassword: 'Nueva contraseña',
             labelConfirmPassword: 'Confirmar contraseña',
             passwordHelp: 'La contraseña debe tener al menos 4 caracteres.',
             btnText: 'Restablecer contraseña',
-            labelCode: 'CÃ³digo de verificaciÃ³n',
-            validateBtnText: 'Validar cÃ³digo',
-            noCodeText: '¿No recibiste el cÃ³digo?',
-            newCodeText: 'Solicitar un nuevo cÃ³digo â†’',
+            labelCode: 'Código de verificación',
+            validateBtnText: 'Validar código',
+            noCodeText: '¿No recibiste el código?',
+            newCodeText: 'Solicitar un nuevo código →',
             alertMismatch: 'Las contraseñas no coinciden.',
             alertLength: 'La contraseña debe tener al menos 4 caracteres.',
             alertSuccess: 'Contraseña restablecida exitosamente',
@@ -333,7 +333,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step == 1) {
             labelCode: 'Verification code',
             validateBtnText: 'Verify code',
             noCodeText: 'Did not receive the code?',
-            newCodeText: 'Request a new code â†’',
+            newCodeText: 'Request a new code →',
             alertMismatch: 'Passwords do not match.',
             alertLength: 'Password must be at least 4 characters.',
             alertSuccess: 'Password reset successfully',

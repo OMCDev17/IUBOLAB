@@ -2,7 +2,7 @@
 // ============================================================================
 // Email Templates and Functions - Plantillas y Funciones de Correo
 // ============================================================================
-// Funciones para enviar correos profesionales con diseÃ±o coherente
+// Funciones para enviar correos profesionales con diseño coherente
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -31,13 +31,13 @@ function attachInstituteLogo(PHPMailer $mailer): string {
 }
 
 /**
- * EnvÃ­a un correo de restablecimiento de contraseÃ±a con cÃ³digo de 4 dÃ­gitos
+ * Envía un correo de restablecimiento de contraseña con código de 4 dígitos
  * 
  * @param string $email Email del usuario
  * @param string $userName Nombre del usuario
- * @param string $code CÃ³digo de 4 dÃ­gitos
- * @param array $config ConfiguraciÃ³n SMTP
- * @return bool True si se enviÃ³ exitosamente
+ * @param string $code Código de 4 dígitos
+ * @param array $config Configuración SMTP
+ * @return bool True si se envió exitosamente
  */
 function sendPasswordResetEmail($email, $userName, $code, $config) {
     require_once __DIR__ . '/../vendor/autoload.php';
@@ -58,7 +58,7 @@ function sendPasswordResetEmail($email, $userName, $code, $config) {
         $mailer->Password = $config['smtp']['password'];
         $mailer->SMTPSecure = $config['smtp']['secure'];
         $mailer->Port = $config['smtp']['port'];
-        $mailer->setFrom($config['smtp']['from_email'], 'Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez');
+        $mailer->setFrom($config['smtp']['from_email'], 'Instituto de Bio-Orgánica Antonio González');
         $mailer->addAddress($email);
         $logoSrc = attachInstituteLogo($mailer);
         $htmlBody = getPasswordResetTemplate($userName, $code, $logoSrc);
@@ -75,14 +75,14 @@ function sendPasswordResetEmail($email, $userName, $code, $config) {
 }
 
 /**
- * EnvÃ­a un correo de bienvenida al nuevo usuario registrado
+ * Envía un correo de bienvenida al nuevo usuario registrado
  * 
  * @param string $email Email del usuario
  * @param string $userName Nombre de usuario
  * @param string $firstName Nombre del usuario
- * @param string $loginUrl URL de la pÃ¡gina de login
- * @param array $config ConfiguraciÃ³n SMTP
- * @return bool True si se enviÃ³ exitosamente
+ * @param string $loginUrl URL de la página de login
+ * @param array $config Configuración SMTP
+ * @return bool True si se envió exitosamente
  */
 function sendWelcomeEmail($email, $userName, $firstName, $loginUrl, $config) {
     require_once __DIR__ . '/../vendor/autoload.php';
@@ -103,7 +103,7 @@ function sendWelcomeEmail($email, $userName, $firstName, $loginUrl, $config) {
         $mailer->Password = $config['smtp']['password'];
         $mailer->SMTPSecure = $config['smtp']['secure'];
         $mailer->Port = $config['smtp']['port'];
-        $mailer->setFrom($config['smtp']['from_email'], 'Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez');
+        $mailer->setFrom($config['smtp']['from_email'], 'Instituto de Bio-Orgánica Antonio González');
         $mailer->addAddress($email);
         $logoSrc = attachInstituteLogo($mailer);
         $htmlBody = getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc);
@@ -247,7 +247,7 @@ function getGroupApprovalRequestTemplate($supervisorName, $requestData, $logoSrc
     <body>
         <div class="container">
             <div class="header">
-                <img alt="Logo Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez" class="logo" src="{$logoSrc}" />
+                <img alt="Logo Instituto de Bio-Orgánica Antonio González" class="logo" src="{$logoSrc}" />
                 <h1 style="margin:0;font-size:26px;">Nueva solicitud de miembro</h1>
                 <p style="margin:10px 0 0 0;font-size:14px;color:#ede9fe;">Hay una nueva solicitud pendiente de aprobacion</p>
             </div>
@@ -282,10 +282,10 @@ function getGroupApprovalRequestTemplate($supervisorName, $requestData, $logoSrc
 }
 
 /**
- * Obtiene la plantilla HTML para correo de restablecimiento de contraseÃ±a
+ * Obtiene la plantilla HTML para correo de restablecimiento de contraseña
  * 
  * @param string $userName Nombre del usuario
- * @param string $code CÃ³digo de 4 dÃ­gitos
+ * @param string $code Código de 4 dígitos
  * @return string HTML del correo
  */
 function getPasswordResetTemplate($userName, $code, $logoSrc = null) {
@@ -297,7 +297,7 @@ function getPasswordResetTemplate($userName, $code, $logoSrc = null) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Restablecimiento de ContraseÃ±a</title>
+        <title>Restablecimiento de Contraseña</title>
         <style>
             body {
                 margin: 0;
@@ -449,8 +449,8 @@ function getPasswordResetTemplate($userName, $code, $logoSrc = null) {
             <!-- Header -->
             <div class="header">
                 <img alt="Logo Instituto de Bio-Orgï¿½nica Antonio Gonzï¿½lez" class="logo" src="{$logoSrc}" />
-                <h1>Restablecimiento de contraseÃ±a / Password reset</h1>
-                <p style="font-size:14px; margin-top: 8px; color: #e5e7eb;">Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez - GestIUBO</p>
+                <h1>Restablecimiento de contraseña / Password reset</h1>
+                <p style="font-size:14px; margin-top: 8px; color: #e5e7eb;">Instituto de Bio-Orgánica Antonio González - GestIUBO</p>
             </div>
             
             <!-- Main Content -->
@@ -458,40 +458,40 @@ function getPasswordResetTemplate($userName, $code, $logoSrc = null) {
                 <p class="greeting">Hola <strong>{$userName}</strong> / Hello <strong>{$userName}</strong>,</p>
                 
                 <p class="greeting">
-                    Recibimos una solicitud para restablecer la contraseÃ±a de tu cuenta en Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez.
+                    Recibimos una solicitud para restablecer la contraseña de tu cuenta en Instituto de Bio-Orgánica Antonio González.
                     <br>
-                    We received a request to reset your password for Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez.
+                    We received a request to reset your password for Instituto de Bio-Orgánica Antonio González.
                 </p>
                 
                 <!-- Code Box -->
                 <div class="code-section">
-                    <div class="code-label">Tu CÃ³digo de VerificaciÃ³n / Your verification code</div>
+                    <div class="code-label">Tu Código de Verificación / Your verification code</div>
                     <div class="code-display">{$code}</div>
-                    <div class="code-info">Este cÃ³digo expira en 15 minutos / This code expires in 15 minutes</div>
+                    <div class="code-info">Este código expira en 15 minutos / This code expires in 15 minutes</div>
                 </div>
                 
                 <!-- Instructions -->
                 <div class="steps">
-                    <strong>Pasos para restablecer tu contraseÃ±a / Steps to reset your password:</strong>
+                    <strong>Pasos para restablecer tu contraseña / Steps to reset your password:</strong>
                     <ol>
-                        <li>Accede a la pÃ¡gina de restablecimiento de contraseÃ±a / Go to the password reset page</li>
-                        <li>Ingresa el cÃ³digo de 4 dÃ­gitos mostrado arriba / Enter the 4-digit code above</li>
-                        <li>Ingresa tu nueva contraseÃ±a (mÃ­nimo 6 caracteres) / Enter your new password (min 6 characters)</li>
-                        <li>Confirma tu nueva contraseÃ±a / Confirm your new password</li>
-                        <li>Listo - contraseÃ±a actualizada / Done - password updated</li>
+                        <li>Accede a la página de restablecimiento de contraseña / Go to the password reset page</li>
+                        <li>Ingresa el código de 4 dígitos mostrado arriba / Enter the 4-digit code above</li>
+                        <li>Ingresa tu nueva contraseña (mínimo 6 caracteres) / Enter your new password (min 6 characters)</li>
+                        <li>Confirma tu nueva contraseña / Confirm your new password</li>
+                        <li>Listo - contraseña actualizada / Done - password updated</li>
                     </ol>
                 </div>
                 
                 <!-- Info Box -->
                 <div class="info-box">
-                    <strong>Nota importante / Important note:</strong> Este cÃ³digo es vÃ¡lido Ãºnicamente por 15 minutos. Si no lo utilizas en este tiempo, deberÃ¡s solicitar un nuevo cÃ³digo.
+                    <strong>Nota importante / Important note:</strong> Este código es válido únicamente por 15 minutos. Si no lo utilizas en este tiempo, deberás solicitar un nuevo código.
                     <br>
                     This code is valid for only 15 minutes. If you do not use it in time, you will need to request a new code.
                 </div>
                 
                 <!-- Security Warning -->
                 <div class="warning">
-                    <strong>Seguridad / Security:</strong> Si no solicitaste este cambio de contraseÃ±a, puedes ignorar este correo. Tu cuenta permanece segura.
+                    <strong>Seguridad / Security:</strong> Si no solicitaste este cambio de contraseña, puedes ignorar este correo. Tu cuenta permanece segura.
                     <br>
                     If you did not request this password reset, ignore this email. Your account remains secure.
                 </div>
@@ -499,12 +499,12 @@ function getPasswordResetTemplate($userName, $code, $logoSrc = null) {
             
             <!-- Footer -->
             <div class="footer">
-                <p>Este es un correo automÃ¡tico. Por favor, no responda a este mensaje. / This is an automated email. Please do not reply.</p>
-                <p>Â© {$year} Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez - Todos los derechos reservados / All rights reserved.</p>
+                <p>Este es un correo automático. Por favor, no responda a este mensaje. / This is an automated email. Please do not reply.</p>
+                <p>© {$year} Instituto de Bio-Orgánica Antonio González - Todos los derechos reservados / All rights reserved.</p>
                 <div class="footer-links">
                     <a href="#">Centro de Ayuda / Help Center</a> | 
-                    <a href="#">PolÃ­tica de Privacidad / Privacy Policy</a> | 
-                    <a href="#">TÃ©rminos de Servicio / Terms of Service</a>
+                    <a href="#">Política de Privacidad / Privacy Policy</a> | 
+                    <a href="#">Términos de Servicio / Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -518,7 +518,7 @@ function getPasswordResetTemplate($userName, $code, $logoSrc = null) {
  * 
  * @param string $firstName Nombre del usuario
  * @param string $userName Nombre de usuario
- * @param string $loginUrl URL de la pÃ¡gina de login
+ * @param string $loginUrl URL de la página de login
  * @return string HTML del correo
  */
 function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
@@ -530,7 +530,7 @@ function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Bienvenido al Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez</title>
+        <title>Bienvenido al Instituto de Bio-Orgánica Antonio González</title>
         <style>
             body {
                 margin: 0;
@@ -676,7 +676,7 @@ function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
                 position: relative;
             }
             .feature-list li:before {
-                content: "âœ“";
+                content: "✓";
                 position: absolute;
                 left: 0;
                 color: #5c068c;
@@ -739,8 +739,8 @@ function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
         <div class="container">
             <!-- Header -->
             <div class="header">
-                <img alt="Logo Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez" class="logo" src="{$logoSrc}" />
-                <h1>Bienvenido/a al Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez / Welcome to Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez</h1>
+                <img alt="Logo Instituto de Bio-Orgánica Antonio González" class="logo" src="{$logoSrc}" />
+                <h1>Bienvenido/a al Instituto de Bio-Orgánica Antonio González / Welcome to Instituto de Bio-Orgánica Antonio González</h1>
                 <p>Tu cuenta ha sido creada exitosamente / Your account has been created successfully</p>
             </div>
             
@@ -749,7 +749,7 @@ function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
                 <p class="greeting">Hola <strong>{$firstName}</strong> / Hello <strong>{$firstName}</strong>,</p>
                 
                 <div class="welcome-box">
-                    <div class="welcome-text">Tu cuenta estÃ¡ lista para usar / Your account is ready</div>
+                    <div class="welcome-text">Tu cuenta está lista para usar / Your account is ready</div>
                     <div class="welcome-subtext">Accede con tus credenciales para comenzar / Log in with your credentials to begin</div>
                 </div>
                 
@@ -768,31 +768,31 @@ function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
                         <span class="value">{$userName}</span>
                     </div>
                     <div class="credential-item">
-                        <span class="label">ContraseÃ±a / Password:</span>
+                        <span class="label">Contraseña / Password:</span>
                         <span class="value">La que estableciste en el registro / The one you set during registration</span>
                     </div>
                 </div>
                 
                 <!-- Login Button -->
                 <div style="text-align: center;">
-                    <a href="{$loginUrl}" class="login-button">Iniciar SesiÃ³n en GestIUBO / Sign in to GestIUBO</a>
+                    <a href="{$loginUrl}" class="login-button">Iniciar Sesión en GestIUBO / Sign in to GestIUBO</a>
                 </div>
                 
                 <!-- Features -->
                 <div class="features">
                     <strong>Lo que puedes hacer ahora / What you can do now:</strong>
                     <ul class="feature-list">
-                        <li>Acceso a tu perfil personal y datos acadÃ©micos / Access your personal profile and academic data</li>
-                        <li>Gestionar tu informaciÃ³n de incorporaciÃ³n / Manage your onboarding information</li>
-                        <li>Actualizar tu contraseÃ±a en cualquier momento / Update your password at any time</li>
-                        <li>Acceder a documentaciÃ³n y recursos del laboratorio / Access lab documentation and resources</li>
+                        <li>Acceso a tu perfil personal y datos académicos / Access your personal profile and academic data</li>
+                        <li>Gestionar tu información de incorporación / Manage your onboarding information</li>
+                        <li>Actualizar tu contraseña en cualquier momento / Update your password at any time</li>
+                        <li>Acceder a documentación y recursos del laboratorio / Access lab documentation and resources</li>
                         <li>Colaborar con otros miembros del equipo / Collaborate with other team members</li>
                     </ul>
                 </div>
                 
                 <!-- Info Box -->
                 <div class="info-box">
-                    <strong>Consejo / Tip:</strong> Guarda este correo en un lugar seguro. Contiene tu nombre de usuario que necesitarÃ¡s para iniciar sesiÃ³n.
+                    <strong>Consejo / Tip:</strong> Guarda este correo en un lugar seguro. Contiene tu nombre de usuario que necesitarás para iniciar sesión.
                     <br>
                     Save this email in a safe place. It contains your username and useful account details. Never share your password with anyone.
                 </div>
@@ -800,12 +800,12 @@ function getWelcomeTemplate($firstName, $userName, $loginUrl, $logoSrc = null) {
             
             <!-- Footer -->
             <div class="footer">
-                <p>Este es un correo automÃ¡tico. Por favor, no responda a este mensaje. / This is an automated email. Please do not reply.</p>
-                <p>Â© {$year} Instituto de Bio-OrgÃ¡nica Antonio GonzÃ¡lez - Todos los derechos reservados / All rights reserved.</p>
+                <p>Este es un correo automático. Por favor, no responda a este mensaje. / This is an automated email. Please do not reply.</p>
+                <p>© {$year} Instituto de Bio-Orgánica Antonio González - Todos los derechos reservados / All rights reserved.</p>
                 <div class="footer-links">
                     <a href="#">Centro de Ayuda / Help Center</a> | 
-                    <a href="#">PolÃ­tica de Privacidad / Privacy Policy</a> | 
-                    <a href="#">TÃ©rminos de Servicio / Terms of Service</a>
+                    <a href="#">Política de Privacidad / Privacy Policy</a> | 
+                    <a href="#">Términos de Servicio / Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -855,7 +855,7 @@ function getNewStayWelcomeTemplate($firstName, $stayData, $loginUrl, $logoSrc = 
             </div>
             <div class="content">
                 <p>Hola <strong>{$firstName}</strong>,<br>Hello <strong>{$firstName}</strong>,</p>
-                <p>Tu solicitud de nueva estancia ha sido aprobada. AquÃ­ tienes el detalle:<br>Your New Internship request has been approved. Here are the details:</p>
+                <p>Tu solicitud de nueva estancia ha sido aprobada. Aquí tienes el detalle:<br>Your New Internship request has been approved. Here are the details:</p>
                 <div class="card">
                     <div class="label">Grupo / Group</div>
                     <div class="value">{$groupName}</div>

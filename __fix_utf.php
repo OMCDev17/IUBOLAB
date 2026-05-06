@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $files = ['admin.php','empleado.php','supervisor.php','quimicos.php','.htaccess'];
 
 function fix_mojibake($s){

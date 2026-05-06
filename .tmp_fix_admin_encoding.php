@@ -5,7 +5,7 @@ $prev=$s;
 for($i=0;$i<4;$i++){
   $t=@iconv('Windows-1252','UTF-8//IGNORE',$s);
   if($t===false) break;
-  if(substr_count($t,'Ã') < substr_count($s,'Ã') || substr_count($t,'Â') < substr_count($s,'Â')){
+  if(substr_count($t,'Ã') < substr_count($s,'Ã') || substr_count($t,'') < substr_count($s,'')){
     $s=$t;
   } else {
     break;
