@@ -1,4 +1,4 @@
-<?php
+?<?php
 require __DIR__ . '/api/auth.php';
 requireRole(['seguridad', 'admin']);
 
@@ -56,24 +56,24 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             <!-- Navigation / Header -->
             <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
                 <div class="flex items-center gap-3 flex-wrap">
-                    <img alt="Logo de la Institución" class="h-10 w-auto object-contain" src="imagenes/instituto-biorganica-agonzalez-original.png" />
+                    <img alt="Logo de la InstituciÃ³n" class="h-10 w-auto object-contain" src="imagenes/instituto-biorganica-agonzalez-original.png" />
                     <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] border-l border-slate-300 dark:border-slate-700 pl-4">Seguridad</h2>
                     <?php if ($fullName): ?>
                         <span class="text-sm text-slate-500 dark:text-slate-400 pl-4">Hola, <?php echo $fullName; ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <button id="mobileMenuToggleSecurity" type="button" class="md:hidden flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary hover:bg-primary hover:text-white transition-colors" aria-label="Abrir menú">
+                    <button id="mobileMenuToggleSecurity" type="button" class="md:hidden flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary hover:bg-primary hover:text-white transition-colors" aria-label="Abrir menÃº">
                         <span class="material-symbols-outlined text-base">menu</span>
                     </button>
                     <div class="hidden md:flex items-center gap-3">
-                        <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesión" title="Cerrar sesión" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
+                        <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesiÃ³n" title="Cerrar sesiÃ³n" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-base">power_settings_new</span>
                         </a>
                     </div>
                 </div>
                 <div id="mobileMenuSecurity" class="hidden md:hidden w-full border-t border-slate-200 dark:border-slate-800 pt-3">
-                    <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesión</a>
+                    <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesiÃ³n</a>
                 </div>
             </header>
 
@@ -89,7 +89,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                             <input id="searchInput" type="text" placeholder="Buscar por nombre o apellidos" class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-primary focus:border-primary">
                             <button id="searchButton" class="rounded-lg bg-primary text-white font-semibold px-4 py-2 text-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50">Buscar</button>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Por privacidad no se muestran datos hasta realizar una búsqueda (mínimo 3 caracteres).</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Por privacidad no se muestran datos hasta realizar una bÃºsqueda (mÃ­nimo 3 caracteres).</p>
                     </div>
 
                     <div id="resultsContainer" class="flex flex-col gap-4"></div>
@@ -97,7 +97,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             </main>
 
             <footer class="text-center py-6 text-slate-500 text-sm">
-                © 2026 GestIUBO. Todos los derechos reservados / All rights reserved.
+                Â© 2026 GestIUBO. Todos los derechos reservados.
             </footer>
         </div>
     </div>
@@ -114,7 +114,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                 0x017E: 0x9E, 0x0178: 0x9F
             };
             const utf8 = new TextDecoder('utf-8', { fatal: false });
-            const suspicious = /[Ã][\x80-\u017F]?|Ã¢â‚¬|Ã¢â‚¬â„¢|Ã¢â‚¬Å“|Ã¢â‚¬|ÃƒÆ’/;
+            const suspicious = /[Ã?][\x80-\u017F]?|Ã?Â¢Ã¢â??Â¬|Ã?Â¢Ã¢â??Â¬Ã¢â??Â¢|Ã?Â¢Ã¢â??Â¬Ã?â??|Ã?Â¢Ã¢â??Â¬Â|Ã?Æ?Ã?â??/;
 
             const toBytes = (str) => Uint8Array.from([...str].map((ch) => {
                 const code = ch.codePointAt(0);
@@ -160,7 +160,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             });
             observer.observe(document.body, { childList: true, subtree: true, characterData: true });
         });
-        // Toast reutilizable con estética del panel (morado)
+        // Toast reutilizable con estÃ©tica del panel (morado)
         const toastHost = (() => {
             const existing = document.getElementById('toastHost');
             if (existing) return existing;
@@ -313,7 +313,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                         <p class="text-sm text-slate-500 dark:text-slate-400">Grupo: ${emp.grupo || '-'}</p>
                         ${emp.is_group_coordinator ? 
                             `<p class="text-sm text-primary font-semibold">Responsable: ${emp.user_phone}</p>` :
-                            `<p class="text-sm text-slate-500 dark:text-slate-400">Teléfono: ${emp.user_phone || '-'}</p>
+                            `<p class="text-sm text-slate-500 dark:text-slate-400">TelÃ©fono: ${emp.user_phone || '-'}</p>
                              <p class="text-sm text-slate-500 dark:text-slate-400">Tel. Responsable: ${emp.coordinador_telefono ? `${emp.coordinador_telefono}${emp.coordinador_grupo && emp.coordinador_grupo !== '-' ? ` (${emp.coordinador_grupo})` : ''}` : '-'}</p>`
                         }
                         <p class="text-sm text-slate-500 dark:text-slate-400">DNI/Pasaporte: ${maskDni(emp.dni_pasaporte)}</p>
@@ -402,6 +402,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
 </body>
 
 </html>
+
 
 
 
