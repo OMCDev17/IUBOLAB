@@ -176,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'save_
   exit;
 }
 $q = trim((string)($_GET['q'] ?? ''));
-$shouldQuery = true;
+$shouldQuery = strlen($q) >= 3;
 $where = [];
 if (!$isAdmin) { $where[] = "(c.acceso='publico' OR (c.acceso='privado' AND (c.acceso_grupo_privado_id=" . (int)$userGroupId . " OR c.grupo_id=" . (int)$userGroupId . ')))'; }
 if (strlen($q) >= 3) { $where[] = "c.nombre LIKE '%" . $mysqli->real_escape_string($q) . "%'"; }
