@@ -89,7 +89,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                             <input id="searchInput" type="text" placeholder="Buscar por nombre o apellidos" class="flex-1 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-sm focus:outline-none focus:ring-primary focus:border-primary">
                             <button id="searchButton" class="rounded-lg bg-primary text-white font-semibold px-4 py-2 text-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50">Buscar</button>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Por privacidad no se muestran datos hasta realizar una bÃºsqueda (mÃ­nimo 3 caracteres).</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Por privacidad no se muestran datos hasta realizar una bÃºsqueda (mínimo 3 caracteres).</p>
                     </div>
 
                     <div id="resultsContainer" class="flex flex-col gap-4"></div>

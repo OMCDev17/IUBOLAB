@@ -251,7 +251,7 @@ $fullName = htmlspecialchars(trim(($employee['nombre'] ?? '') . ' ' . ($employee
                                 <span id="newStayText" class="truncate">Nueva estancia</span>
                             </a>
                         <?php endif; ?>
-                        <a href="/iubolab/quimicos.php" aria-label="Químicos" title="Químicos" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                        <a href="/iubolab/quimicos" aria-label="Químicos" title="Químicos" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                         <button type="button" id="lang-toggle" onclick="toggleLanguage()" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">EN</button>
                         <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesión" title="Cerrar sesión" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-base">power_settings_new</span>
@@ -269,7 +269,7 @@ $fullName = htmlspecialchars(trim(($employee['nombre'] ?? '') . ' ' . ($employee
                             <span id="newStayTextMobile" class="truncate">Nueva estancia</span>
                         </a>
                     <?php endif; ?>
-                    <a href="/iubolab/quimicos.php" aria-label="Químicos" title="Químicos" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                    <a href="/iubolab/quimicos" aria-label="Químicos" title="Químicos" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                     <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesión</a>
                 </div>
             </header>
@@ -731,7 +731,7 @@ $fullName = htmlspecialchars(trim(($employee['nombre'] ?? '') . ' ' . ($employee
             initIuboFabMenu({
                 actions: [
                     { label: 'Cambiar idioma', textIcon: 'EN', onClick: () => toggleLanguage() },
-                    { label: 'Quimicos', icon: 'science', href: '/iubolab/quimicos.php' },
+                    { label: 'Quimicos', icon: 'science', href: '/iubolab/quimicos' },
                     { label: 'Cerrar sesion', icon: 'power_settings_new', onClick: () => logout() }
                 ]
             });
@@ -740,6 +740,7 @@ $fullName = htmlspecialchars(trim(($employee['nombre'] ?? '') . ' ' . ($employee
 </body>
 
 </html>
+
 
 
 

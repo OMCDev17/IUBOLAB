@@ -74,7 +74,7 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
                         <button id="saveButton" aria-label="Guardar cambios" title="Guardar cambios" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-xl">save</span>                          <span class="truncate sr-only">Guardar cambios</span>
                         </button>
-                        <a href="/iubolab/quimicos.php" aria-label="QuÃƒÂ­micos" title="QuÃƒÂ­micos" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                        <a href="/iubolab/quimicos" aria-label="Químicos" title="Químicos" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                         <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesiÃƒÂ³n" title="Cerrar sesiÃƒÂ³n" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-base">power_settings_new</span>
                         </a>
@@ -82,7 +82,7 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
                 </div>
                 <div id="mobileMenuSupervisor" class="hidden md:hidden w-full border-t border-slate-200 dark:border-slate-800 pt-3 flex flex-col gap-2">
                     <button type="button" onclick="document.getElementById('saveButton')?.click();" class="w-full rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Guardar cambios</button>
-                    <a href="/iubolab/quimicos.php" aria-label="QuÃƒÂ­micos" title="QuÃƒÂ­micos" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                    <a href="/iubolab/quimicos" aria-label="Químicos" title="Químicos" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                     <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesiÃƒÂ³n</a>
                 </div>
             </header>
@@ -915,7 +915,7 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
         document.addEventListener('DOMContentLoaded', () => {
             initIuboFabMenu({
                 actions: [
-                    { label: 'Quimicos', icon: 'science', href: '/iubolab/quimicos.php' },
+                    { label: 'Quimicos', icon: 'science', href: '/iubolab/quimicos' },
                     { label: 'Cerrar sesion', icon: 'power_settings_new', onClick: () => logout() }
                 ]
             });
@@ -924,6 +924,7 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
 </body>
 
 </html>
+
 
 
 

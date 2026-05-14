@@ -24,6 +24,8 @@ RewriteCond %{THE_REQUEST} \s/+iubolab/registro_exitoso\.php[\s?] [NC]
 RewriteRule ^registro_exitoso\.php$ registro-exitoso [R=302,L,NC]
 RewriteCond %{THE_REQUEST} \s/+iubolab/approve_group_request\.php[\s?] [NC]
 RewriteRule ^approve_group_request\.php$ aprobar-solicitud [R=302,L,NC]
+RewriteCond %{THE_REQUEST} \s/+iubolab/quimicos\.php[\s?] [NC]
+RewriteRule ^quimicos\.php$ quimicos [R=302,L,NC]
 
 # Si el archivo o carpeta existe, no reescribir.
 RewriteCond %{REQUEST_FILENAME} -f [OR]
@@ -42,7 +44,6 @@ RewriteRule ^supervisor/?$ supervisor.php [L,NC,QSA]
 RewriteRule ^registro/?$ Formulario.php [L,NC,QSA]
 RewriteRule ^nueva-estancia/?$ Formulario.php?mode=newstay [L,NC,QSA]
 RewriteRule ^qu%C3%ADmicos/?$ quimicos [R=301,L,NC]
-RewriteRule ^quimicos/?$ quimicos [R=301,L,NC]
 RewriteRule ^quimicos/?$ quimicos.php [L,NC,QSA]
 
 # Recuperación / contraseña
@@ -56,4 +57,5 @@ RewriteRule ^loggout2/?$ loggout2.html [L,NC,QSA]
 RewriteRule ^salida/?$ loggout2.html [L,NC,QSA]
 RewriteRule ^aprobar-solicitud/?$ approve_group_request.php [L,NC,QSA]
 RewriteRule ^registro-exitoso/?$ registro_exitoso.php [L,NC,QSA]
+
 

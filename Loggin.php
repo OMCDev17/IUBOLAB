@@ -65,10 +65,10 @@ if ($user) {
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 bg-background-light dark:bg-background-dark">
+<body class="min-h-screen flex flex-col items-center justify-center p-3 md:p-6 bg-background-light dark:bg-background-dark">
     <main class="w-full max-w-xl bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col relative" data-purpose="main-terminal-card">
-        <section class="p-6 md:p-8 bg-white dark:bg-slate-900 flex flex-col relative" data-purpose="login-panel">
-            <div class="absolute top-8 right-8 flex items-center gap-2 text-sm font-medium">
+        <section class="p-5 md:p-6 bg-white dark:bg-slate-900 flex flex-col relative" data-purpose="login-panel">
+            <div class="absolute top-5 right-5 flex items-center gap-2 text-sm font-medium">
                 <span class="text-lab-accent cursor-pointer border-b-2 border-lab-accent pb-0.5" id="lang-es" onclick="switchLanguage('es')">ES</span>
                 <span class="text-slate-300">|</span>
                 <span class="text-slate-400 hover:text-lab-primary cursor-pointer transition-colors border-b-2 border-transparent hover:border-slate-400 pb-0.5" id="lang-en" onclick="switchLanguage('en')">EN</span>
@@ -163,17 +163,17 @@ if ($user) {
                     switchLanguage('es');
                 });
             </script>
-            <div class="mt-8 mb-10 text-center">
-                <img alt="Universidad de La Laguna Logo" class="h-auto w-72 mx-auto mb-8" src="/iubolab/imagenes/instituto-biorganica-agonzalez-original.png" />
-                <h2 class="text-3xl font-bold text-lab-primary mb-2">Recursos Humanos</h2>
+            <div class="mt-5 mb-6 text-center">
+                <img alt="Universidad de La Laguna Logo" class="h-auto w-56 md:w-64 mx-auto mb-5" src="/iubolab/imagenes/instituto-biorganica-agonzalez-original.png" />
+                <h2 class="text-2xl md:text-3xl font-bold text-lab-primary mb-1">Recursos Humanos</h2>
                 <p class="text-slate-500">Ingresa tus credenciales para acceder.</p>
             </div>
-            <form id="loginForm" class="space-y-6 max-w-md mx-auto w-full" onsubmit="handleLogin(event)">
+            <form id="loginForm" class="space-y-4 max-w-md mx-auto w-full" onsubmit="handleLogin(event)">
                 <div class="space-y-2">
                     <label class="text-sm font-semibold text-slate-700 block" for="username">Usuario o Correo Electronico</label>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
-                        <input class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-lab-accent focus:border-transparent outline-none transition-all placeholder:text-slate-400" id="username" name="username" placeholder="ej. User_123" type="text" />
+                        <input class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-lab-accent focus:border-transparent outline-none transition-all placeholder:text-slate-400" id="username" name="username" placeholder="ej. User_123" type="text" />
                     </div>
                 </div>
                 <div class="space-y-2">
@@ -183,20 +183,20 @@ if ($user) {
                     </div>
                     <div class="relative">
                         <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
-                        <input class="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-lab-accent focus:border-transparent outline-none transition-all placeholder:text-slate-400" id="password" name="password" placeholder="********" type="password" />
+                        <input class="w-full pl-12 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-lab-accent focus:border-transparent outline-none transition-all placeholder:text-slate-400" id="password" name="password" placeholder="********" type="password" />
                     </div>
                 </div>
                 <div class="flex items-center">
                     <input class="w-4 h-4 text-lab-accent border-slate-300 rounded focus:ring-lab-accent" id="remember" type="checkbox" />
                     <label class="ml-2 text-sm text-slate-600 cursor-pointer" for="remember">Recordar mi sesión</label>
                 </div>
-                <button id="loginButton" class="w-full py-4 bg-lab-accent text-white font-bold rounded-2xl hover:bg-lab-accentHover shadow-lg shadow-purple-100 transition-all flex items-center justify-center gap-2 group" type="submit">
+                <button id="loginButton" class="w-full py-3 bg-lab-accent text-white font-bold rounded-2xl hover:bg-lab-accentHover shadow-lg shadow-purple-100 transition-all flex items-center justify-center gap-2 group" type="submit">
                     <span id="loginButtonText">Iniciar sesión</span>
                     <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">login</span>
                 </button>
                 <p id="loginError" class="text-sm text-red-600 hidden mt-2"></p>
             </form>
-            <div class="mt-12 pt-8 border-t border-slate-100 text-center">
+            <div class="mt-6 pt-5 border-t border-slate-100 text-center">
                 <p class="text-slate-500 text-sm">
                     ¿No tienes una cuenta?
                     <a class="text-lab-accent font-bold hover:underline" href="registro">Crear Cuenta de Miembro</a>
