@@ -1,0 +1,4 @@
+# Dependencies
+/vendor/
+
+vendor/phpmailer/phpmailer

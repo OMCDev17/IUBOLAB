@@ -1,4 +1,4 @@
-?<?php
+<?php
 require __DIR__ . '/api/auth.php';
 requireRole('admin');
 header('Content-Type: text/html; charset=UTF-8');
@@ -14,7 +14,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>IUBOLAB - AdministraciÃ³n</title>
+    <title>IUBOLAB - Administración</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link rel="icon" href="/iubolab/imagenes/icono_circulo.png" type="image/png">
     <link rel="icon" type="image/png" sizes="32x32" href="/iubolab/imagenes/icono_circulo.png">
@@ -57,16 +57,16 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
     <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
         <div class="layout-container flex h-full grow flex-col">
             <!-- Navigation / Header -->
-            <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
+            <header class="hidden md:flex md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
                 <div class="flex items-center gap-3 flex-wrap">
-                    <img alt="Logo de la Institucion" class="h-10 w-auto object-contain" src="imagenes/instituto-biorganica-agonzalez-original.png" />
-                    <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] border-l border-slate-300 dark:border-slate-700 pl-4">AdministraciÃ³n</h2>
+                    <img alt="Logo de la Institucion" class="h-10 w-auto object-contain" src="/iubolab/imagenes/instituto-biorganica-agonzalez-original.png" />
+                    <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] border-l border-slate-300 dark:border-slate-700 pl-4">Administración</h2>
                     <?php if ($fullName): ?>
                         <span class="text-sm text-slate-500 dark:text-slate-400 pl-4">Hola, <?php echo $fullName; ?></span>
                     <?php endif; ?>
                 </div>
                 <div class="flex items-center gap-3 w-full md:w-auto justify-end">
-                    <a href="/iubolab/quimicos.php" aria-label="QuÃ­micos" title="QuÃ­micos" class="md:hidden flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                    <a href="/iubolab/quimicos.php" aria-label="QuÃƒÂ­micos" title="QuÃƒÂ­micos" class="md:hidden flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                     <button id="mobileMenuToggleAdmin" type="button" class="md:hidden flex shrink-0 items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary hover:bg-primary hover:text-white transition-colors" aria-label="Abrir menu">
                         <span class="material-symbols-outlined text-base">menu</span>
                     </button>
@@ -74,7 +74,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                         <button id="saveAll" aria-label="Guardar cambios" title="Guardar cambios" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-xl">save</span>
                         </button>
-                        <a href="/iubolab/quimicos.php" aria-label="QuÃ­micos" title="QuÃ­micos" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                        <a href="/iubolab/quimicos.php" aria-label="QuÃƒÂ­micos" title="QuÃƒÂ­micos" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                         <a href="#" onclick="logout(); return false;" aria-label="Cerrar sesion" title="Cerrar sesion" class="flex shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-11 w-11 border border-primary bg-white dark:bg-slate-900 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary hover:text-white transition-colors">
                             <span class="material-symbols-outlined text-base">power_settings_new</span>
                         </a>
@@ -82,15 +82,15 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                 </div>
                 <div id="mobileMenuAdmin" class="hidden md:hidden w-full border-t border-slate-200 dark:border-slate-800 pt-3 flex flex-col gap-2">
                     <button type="button" onclick="document.getElementById('saveAll')?.click();" class="w-full rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Guardar cambios</button>
-                    <a href="/iubolab/quimicos.php" aria-label="QuÃ­micos" title="QuÃ­micos" class="w-full flex items-center justify-center rounded-xl h-11 border border-red-600 bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
+                    <a href="/iubolab/quimicos.php" aria-label="QuÃƒÂ­micos" title="QuÃƒÂ­micos" class="w-full flex items-center justify-center rounded-xl h-11 border border-red-600 bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-colors"><span class="material-symbols-outlined text-xl">science</span></a>
                     <a href="#" onclick="logout(); return false;" class="w-full flex items-center justify-center rounded-xl h-11 border border-primary text-primary text-sm font-bold hover:bg-primary hover:text-white transition-colors">Cerrar sesion</a>
                 </div>
             </header>
 
-            <main class="flex-1 flex justify-center pt-36 md:pt-28 pb-10 px-4 md:px-0">
+            <main class="flex-1 flex justify-center pt-6 md:pt-28 pb-10 px-4 md:px-0">
                 <div class="w-full max-w-[980px] flex flex-col gap-6">
                     <div class="text-center">
-                        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">Panel de AdministraciÃ³n</h1>
+                        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">Panel de Administración</h1>
                         <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Edita cualquier dato de los usuarios y guarda los cambios cuando termines.</p>
                     </div>
 
@@ -139,7 +139,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             </main>
 
             <footer class="text-center py-6 text-slate-500 text-sm">
-                 2026 GestIUBO. Todos los derechos reservados.
+                 © 2026 GestIUBO. Todos los derechos reservados.
             </footer>
         </div>
     </div>
@@ -1155,7 +1155,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                 deleteButton.setAttribute('aria-label', 'Eliminar usuario');
                 deleteButton.addEventListener('click', async () => {
                     const confirmed = await uiConfirm(
-                        `¿Estás seguro que deseas borrar este usuario?\n${emp.nombre} ${emp.apellidos}\n\nLa acción será permanente.`
+                        `Â¿EstÃ¡s seguro que deseas borrar este usuario?\n${emp.nombre} ${emp.apellidos}\n\nLa acciÃ³n serÃ¡ permanente.`
                     );
                     if (!confirmed) return;
                     
@@ -1486,9 +1486,21 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             window.location.href = '/iubolab/logout';
         }
     </script>
+    <script src="/iubolab/scripts/mobile_fab_menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initIuboFabMenu({
+                actions: [
+                    { label: 'Quimicos', icon: 'science', href: '/iubolab/quimicos.php' },
+                    { label: 'Cerrar sesion', icon: 'power_settings_new', onClick: () => logout() }
+                ]
+            });
+        });
+    </script>
 </body>
 
 </html>
+
 
 
 

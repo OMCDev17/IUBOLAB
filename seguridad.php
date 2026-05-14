@@ -1,4 +1,4 @@
-?<?php
+<?php
 require __DIR__ . '/api/auth.php';
 requireRole(['seguridad', 'admin']);
 
@@ -54,9 +54,9 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
     <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
         <div class="layout-container flex h-full grow flex-col">
             <!-- Navigation / Header -->
-            <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
+            <header class="hidden md:flex md:flex-row md:items-center md:justify-between gap-3 border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-4 fixed top-0 left-0 right-0 z-50">
                 <div class="flex items-center gap-3 flex-wrap">
-                    <img alt="Logo de la InstituciÃ³n" class="h-10 w-auto object-contain" src="imagenes/instituto-biorganica-agonzalez-original.png" />
+                    <img alt="Logo de la InstituciÃ³n" class="h-10 w-auto object-contain" src="/iubolab/imagenes/instituto-biorganica-agonzalez-original.png" />
                     <h2 class="text-slate-900 dark:text-slate-100 text-lg font-bold leading-tight tracking-[-0.015em] border-l border-slate-300 dark:border-slate-700 pl-4">Seguridad</h2>
                     <?php if ($fullName): ?>
                         <span class="text-sm text-slate-500 dark:text-slate-400 pl-4">Hola, <?php echo $fullName; ?></span>
@@ -97,7 +97,7 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
             </main>
 
             <footer class="text-center py-6 text-slate-500 text-sm">
-                Â© 2026 GestIUBO. Todos los derechos reservados.
+                © 2026 GestIUBO.  Todos los derechos reservados.
             </footer>
         </div>
     </div>
@@ -383,6 +383,17 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
                     e.preventDefault();
                     performSearch();
                 }
+            });
+        });
+    </script>
+
+    <script src="/iubolab/scripts/mobile_fab_menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            initIuboFabMenu({
+                actions: [
+                    { label: 'Cerrar sesion', icon: 'power_settings_new', onClick: () => logout() }
+                ]
             });
         });
     </script>
