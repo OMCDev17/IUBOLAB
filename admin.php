@@ -89,11 +89,6 @@ $fullName = $user ? htmlspecialchars(trim(($user['nombre'] ?? '') . ' ' . ($user
 
             <main class="flex-1 flex justify-center pt-6 md:pt-28 pb-10 px-4 md:px-0">
                 <div class="w-full max-w-[980px] flex flex-col gap-6">
-                    <div class="text-center">
-                        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">Panel de Administración</h1>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">Edita cualquier dato de los usuarios y guarda los cambios cuando termines.</p>
-                    </div>
-
                     <div id="groupManager"></div>
 
                     <section class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6">

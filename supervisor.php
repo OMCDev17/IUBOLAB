@@ -89,19 +89,9 @@ $groupLabel = htmlspecialchars(trim($user['group_name'] ?? $user['grupo'] ?? '')
 
             <main class="flex-1 flex justify-center pt-6 md:pt-28 pb-10 px-4 md:px-0">
                 <div class="w-full max-w-[980px] flex flex-col gap-8">
-                    
-                    <!-- Header section -->
-                    <div class="flex flex-col gap-2">
-                        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-100">Panel del Coordinador</h1>
-                        <p class="text-sm text-slate-500 dark:text-slate-400">Administra tu grupo y aprueba nuevas solicitudes de incorporaciÃƒÂ³n</p>
-                    </div>
 
                     <!-- Supervisor profile section -->
                     <div class="flex flex-col gap-4">
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Tu perfil</h2>
-                            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">InformaciÃƒÂ³n de tu estancia en el grupo</p>
-                        </div>
                         <div id="supervisorCard" class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 p-6"></div>
                     </div>
 
